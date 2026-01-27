@@ -55,7 +55,7 @@ export function LetterPreview({ onCopy, onDownload, isBlurred }: LetterPreviewPr
         }`}
         style={{ zIndex: hippoExiting ? 0 : 10 }}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154" fill="none" className="w-80 h-80" style={{ stroke: 'black', strokeWidth: 0.5 }}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154" fill="none" className="w-80 h-80">
           <path d="M46.6434 19.8149C46.6009 19.8274 46.565 19.8561 46.5435 19.8948C46.522 19.9336 46.5166 19.9792 46.5285 20.0219C46.5285 20.1752 46.5975 20.1292 47.5403 20.1829C48.3528 20.2289 49.0733 20.2672 49.426 20.2672H49.6406C49.6718 20.2588 49.7003 20.2424 49.7232 20.2195C49.7461 20.1966 49.7625 20.1681 49.7709 20.1369C49.7792 20.106 49.7793 20.0735 49.7713 20.0426C49.7632 20.0117 49.7472 19.9834 49.7249 19.9606C49.4873 19.7229 46.6664 19.8073 46.6434 19.8149Z" fill="black"/>
         </svg>
       </div>
