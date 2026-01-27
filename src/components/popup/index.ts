@@ -1,0 +1,1 @@
+export { CapturePopup } from './CapturePopup';

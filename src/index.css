@@ -1,0 +1,101 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@theme {
+  --color-bg-page: #FDF8F3;
+  --color-bg-form: #fef5e6;
+  --color-tab-active: #fef5e6;
+  --color-tab-completed: #e8dcc6;
+  --color-violet: #8b6fcf;
+  --color-violet-light: #e0d4ff;
+  --color-violet-dark: #7a5dc4;
+  --color-border: #1F2937;
+  --color-text-primary: #1F2937;
+  --color-text-secondary: #6B7280;
+
+  --font-family-sans: 'Inter', system-ui, sans-serif;
+
+  --radius-input: 8px;
+  --radius-block: 12px;
+  --radius-modal: 16px;
+
+  --shadow-modal: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+body {
+  background-color: var(--color-bg-page);
+  font-family: var(--font-family-sans);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-bg-page);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-tab-completed);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-secondary);
+}
+
+/* Blur animation for letter */
+.blur-letter {
+  filter: blur(8px);
+  transition: filter 0.5s ease-out;
+}
+
+.blur-letter.revealed {
+  filter: blur(0);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Floating animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Letter reveal animation from top to bottom */
+@keyframes revealFromTop {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
