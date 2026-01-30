@@ -15,9 +15,15 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
   const value = answers[question.id];
 
   // Compute dynamic label if defined
-  const label = question.dynamicLabel && answers[question.dynamicLabel.field] === question.dynamicLabel.value
+  let label = question.dynamicLabel && answers[question.dynamicLabel.field] === question.dynamicLabel.value
     ? question.dynamicLabel.label
     : question.label;
+
+  // Insert answer value into label if labelField is defined
+  if (question.labelField) {
+    const fieldValue = answers[question.labelField];
+    label = label.replace('{value}', fieldValue ? String(fieldValue) : '');
+  }
 
   // Compute dynamic placeholder if defined
   const placeholder = question.dynamicPlaceholder && answers[question.dynamicPlaceholder.field] === question.dynamicPlaceholder.value
@@ -70,7 +76,32 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
         />
       )}
 
-      {question.type === 'dropdown' && (
+      {question.type === 'dropdown' && question.id === 'parcours' && (
+        <div>
+          <label className="block text-sm font-medium text-text-primary mb-3">
+            {label}
+            {question.required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          <div className="flex gap-4">
+            {filteredOptions?.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => handleSelectChange(option.value)}
+                className={`flex-1 py-3 px-4 rounded-lg border-2 font-semibold transition-all ${
+                  value === option.value
+                    ? 'border-violet bg-violet-light text-violet'
+                    : 'border-border bg-white text-text-primary hover:border-violet/50'
+                }`}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {question.type === 'dropdown' && question.id !== 'parcours' && (
         <Dropdown
           label={label}
           options={filteredOptions || []}
@@ -101,6 +132,10 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
           trueLabel={question.trueLabel}
           falseLabel={question.falseLabel}
         />
+      )}
+
+      {question.type === 'info' && (
+        <p className="text-sm font-bold text-text-primary">{label}</p>
       )}
     </div>
   );
