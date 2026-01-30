@@ -83,8 +83,8 @@ export const blocks: Block[] = [
         label: 'Quel parcours vises-tu ?',
         required: true,
         options: [
-          { value: 'PASS', label: 'PASS (Parcours Accès Santé Spécifique)' },
-          { value: 'LAS', label: 'LAS (Licence Accès Santé)' },
+          { value: 'PASS', label: 'PASS' },
+          { value: 'LAS', label: 'LAS' },
         ],
       },
       {
@@ -97,7 +97,7 @@ export const blocks: Block[] = [
       {
         id: 'sousVoeuxMultiple',
         type: 'boolean',
-        label: 'Combien de sous-vœux PASS fais-tu ?',
+        label: 'Combien de sous-vœux PASS fais-tu dans la faculté ? (une mineure = un sous-vœu)',
         required: true,
         condition: { field: 'parcours', value: 'PASS' },
         falseLabel: 'Un seul',
@@ -107,18 +107,23 @@ export const blocks: Block[] = [
         id: 'sousVoeuxDetail',
         type: 'text',
         label: 'Quel sous-vœu ?',
-        dynamicLabel: { field: 'sousVoeuxMultiple', value: true, label: 'Quels sous-vœux ?' },
         placeholder: 'Exemple : Droit',
-        dynamicPlaceholder: { field: 'sousVoeuxMultiple', value: true, placeholder: 'Exemple : Droit, Philosophie, Économie...' },
         required: true,
-        condition: { field: 'parcours', value: 'PASS' },
+        condition: { field: 'sousVoeuxMultiple', value: false },
+      },
+      {
+        id: 'sousVoeuxMultipleInfo',
+        type: 'info',
+        label: 'Avec plusieurs sous-vœux, il est moins essentiel de mentionner tes mineures dans ta lettre. Tu pourras toujours le faire à la fin si tu le souhaites.',
+        required: false,
+        condition: { field: 'sousVoeuxMultiple', value: true },
       },
       {
         id: 'licenceMajeure',
-        type: 'dropdown',
+        type: 'text',
         label: 'Quelle est ta licence majeure ?',
         required: true,
-        options: LICENCES_LAS,
+        placeholder: 'Droit',
         condition: { field: 'parcours', value: 'LAS' },
       },
     ],
@@ -174,8 +179,8 @@ export const blocks: Block[] = [
       {
         id: 'exempleQualite',
         type: 'text',
-        label: 'Quelle qualité te permettra de réussir en médecine ? Prouve-le avec un exemple concret.',
-        placeholder: 'Ma rigueur : en Terminale, j\'ai mis en place un planning de révision strict que j\'ai tenu 6 mois, ce qui m\'a permis d\'améliorer ma moyenne de 3 points...',
+        label: 'Es-tu quelqu\'un de rigoureux et discipliné ? Prouve-le avec un ou deux exemples.',
+        placeholder: 'En Terminale, j\'ai mis en place un planning de révision strict, ce qui m\'a permis d\'améliorer ma moyenne de 3 points. Je pratique aussi la boxe 3 fois par semaine depuis 4 ans, ce qui m\'a appris la discipline et la persévérance au quotidien...',
         required: true,
         condition: { field: 'parcours', value: 'PASS' },
       },
@@ -183,11 +188,25 @@ export const blocks: Block[] = [
       {
         id: 'exempleQualiteLAS',
         type: 'text',
-        label: 'Quelle qualité te permettra de réussir ta double licence ? Prouve-le avec un exemple concret.',
-        placeholder: 'Ma capacité d\'organisation : en Terminale, je gérais mes cours, 8h de tennis par semaine et du bénévolat. Cette rigueur me permettra de mener de front ma licence et l\'option santé...',
+        label: 'Es-tu quelqu\'un de rigoureux et discipliné ? Prouve-le avec un ou deux exemples.',
+        placeholder: 'En Terminale, j\'ai mis en place un planning de révision strict, ce qui m\'a permis d\'améliorer ma moyenne de 3 points. Je pratique aussi la boxe 3 fois par semaine depuis 4 ans, ce qui m\'a appris la discipline et la persévérance au quotidien...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
+      {
+        id: 'engagementConcret',
+        type: 'text',
+        label: 'Décris un engagement extra-scolaire concret (délégué, association, bénévolat...).',
+        placeholder: 'Bénévole aux Restos du Cœur depuis 2 ans, délégué de classe en Première et Terminale...',
+        required: true,
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: 'Projet & Motivation',
+    shortTitle: 'Projet',
+    questions: [
       // PASS - projetSante
       {
         id: 'projetSante',
@@ -206,13 +225,6 @@ export const blocks: Block[] = [
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Projet & Motivation',
-    shortTitle: 'Projet',
-    questions: [
       {
         id: 'motivationMedecine',
         type: 'text',
@@ -224,10 +236,11 @@ export const blocks: Block[] = [
       {
         id: 'mineureCoherence',
         type: 'text',
-        label: 'En quoi ta ou tes mineures sont-elles un choix cohérent avec ton projet médical ?',
+        label: 'Est-ce que ta mineure {value} a un lien avec ce que tu veux faire plus tard ? Si oui, détaille-le.',
+        labelField: 'sousVoeuxDetail',
         placeholder: 'J\'ai choisi la mineure Droit de la santé car elle me permettra de comprendre les enjeux éthiques et juridiques de la pratique médicale...',
-        required: true,
-        condition: { field: 'parcours', value: 'PASS' },
+        required: false,
+        condition: { field: 'sousVoeuxMultiple', value: false },
       },
       {
         id: 'motivationSante',
@@ -252,13 +265,6 @@ export const blocks: Block[] = [
         placeholder: 'Je fais du tennis en compétition depuis 8 ans (niveau régional). Cette pratique m\'a appris la persévérance et la gestion du stress, des qualités essentielles pour gérer ma double licence...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
-      },
-      {
-        id: 'engagementConcret',
-        type: 'text',
-        label: 'Décris un engagement extra-scolaire concret et la qualité qu\'il a développée chez toi.',
-        placeholder: 'Bénévole aux Restos du Cœur depuis 2 ans, j\'ai développé mon écoute et ma capacité à m\'adapter à des personnes en difficulté...',
-        required: true,
       },
     ],
   },
