@@ -46,15 +46,11 @@ export function RecapSummary() {
     <div className="h-full overflow-auto">
       <h3 className="text-lg font-semibold text-text-primary mb-4">Récapitulatif de tes réponses</h3>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         {answeredQuestions.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-input border border-border/50 p-3"
-          >
-            <p className="text-xs text-text-secondary mb-1">{item.label}</p>
-            <p className="text-sm text-text-primary font-medium truncate">{item.value}</p>
-          </div>
+          <p key={index} className="text-sm text-text-primary">
+            <span className="font-bold">{item.label} :</span> {item.value}
+          </p>
         ))}
       </div>
     </div>

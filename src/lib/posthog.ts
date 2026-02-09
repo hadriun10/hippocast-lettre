@@ -38,9 +38,9 @@ export const track = {
     }
   },
 
-  leadCaptured: (interetPrepa: string) => {
+  leadCaptured: (consent: string, userType?: string) => {
     if (POSTHOG_KEY) {
-      posthog.capture('lead_captured', { interet_prepa: interetPrepa });
+      posthog.capture('lead_captured', { consent, user_type: userType });
     }
   },
 

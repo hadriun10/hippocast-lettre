@@ -72,6 +72,9 @@ export const UNIVERSITES = [
 ];
 
 export const blocks: Block[] = [
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BLOC 1 : PROFIL
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: 1,
     title: 'Ton profil',
@@ -94,53 +97,45 @@ export const blocks: Block[] = [
         required: true,
         options: UNIVERSITES,
       },
+      // PASS - mineures
       {
-        id: 'sousVoeuxMultiple',
-        type: 'boolean',
-        label: 'Combien de sous-vœux PASS fais-tu dans la faculté ? (une mineure = un sous-vœu)',
+        id: 'mineures',
+        type: 'text',
+        label: 'Quelle(s) mineure(s) as-tu choisie(s) ou repérée(s) ?',
+        placeholder: 'Droit, Économie-Gestion...',
         required: true,
         condition: { field: 'parcours', value: 'PASS' },
-        falseLabel: 'Un seul',
-        trueLabel: 'Plusieurs',
       },
-      {
-        id: 'sousVoeuxDetail',
-        type: 'text',
-        label: 'Quel sous-vœu ?',
-        placeholder: 'Exemple : Droit',
-        required: true,
-        condition: { field: 'sousVoeuxMultiple', value: false },
-      },
-      {
-        id: 'sousVoeuxMultipleInfo',
-        type: 'info',
-        label: 'Avec plusieurs sous-vœux, il est moins essentiel de mentionner tes mineures dans ta lettre. Tu pourras toujours le faire à la fin si tu le souhaites.',
-        required: false,
-        condition: { field: 'sousVoeuxMultiple', value: true },
-      },
+      // LAS - licenceMajeure
       {
         id: 'licenceMajeure',
         type: 'text',
         label: 'Quelle est ta licence majeure ?',
+        placeholder: 'Droit, Psychologie, Biologie...',
         required: true,
-        placeholder: 'Droit',
         condition: { field: 'parcours', value: 'LAS' },
       },
     ],
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BLOC 2 : PARCOURS SCOLAIRE
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: 2,
     title: 'Ton parcours',
     shortTitle: 'Parcours',
     questions: [
+      // LAS - motivationLicence (en premier pour LAS)
       {
         id: 'motivationLicence',
         type: 'text',
-        label: 'Pourquoi as-tu choisi cette licence ?',
-        placeholder: 'Depuis mon stage en cabinet d\'avocat, je suis fasciné par les questions de responsabilité médicale. Le droit me permettra de comprendre les enjeux éthiques qui encadrent la médecine...',
+        label: 'Pourquoi as-tu choisi cette licence ? Qu\'est-ce qui t\'attire dans cette discipline ?',
+        placeholder: 'Depuis mon stage en cabinet d\'avocat, je suis fasciné par le raisonnement juridique. J\'aime analyser des situations complexes, construire une argumentation, et comprendre comment le droit encadre les relations humaines...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
+      // Spécialités (commun)
       {
         id: 'specialite1',
         type: 'dropdown',
@@ -175,99 +170,111 @@ export const blocks: Block[] = [
         min: 0,
         max: 20,
       },
-      // PASS - exempleQualite
+      // PASS - projetScientifique
       {
-        id: 'exempleQualite',
+        id: 'projetScientifique',
         type: 'text',
-        label: 'Es-tu quelqu\'un de rigoureux et discipliné ? Prouve-le avec un ou deux exemples.',
-        placeholder: 'En Terminale, j\'ai mis en place un planning de révision strict, ce qui m\'a permis d\'améliorer ma moyenne de 3 points. Je pratique aussi la boxe 3 fois par semaine depuis 4 ans, ce qui m\'a appris la discipline et la persévérance au quotidien...',
+        label: 'Cite un chapitre, exercice ou projet scientifique que tu as bien compris cette année. Qu\'est-ce que tu as appris dans ta manière de réfléchir ?',
+        placeholder: 'En SVT, j\'ai particulièrement bien compris le chapitre sur la régulation de la glycémie. Construire le schéma bilan m\'a appris à relier les causes aux conséquences et à raisonner par étapes...',
         required: true,
         condition: { field: 'parcours', value: 'PASS' },
       },
-      // LAS - exempleQualite
+      // LAS - projetAcademique
       {
-        id: 'exempleQualiteLAS',
+        id: 'projetAcademique',
         type: 'text',
-        label: 'Es-tu quelqu\'un de rigoureux et discipliné ? Prouve-le avec un ou deux exemples.',
-        placeholder: 'En Terminale, j\'ai mis en place un planning de révision strict, ce qui m\'a permis d\'améliorer ma moyenne de 3 points. Je pratique aussi la boxe 3 fois par semaine depuis 4 ans, ce qui m\'a appris la discipline et la persévérance au quotidien...',
+        label: 'Cite un chapitre, exercice ou projet dans une de tes spécialités que tu as bien compris cette année. Qu\'est-ce que tu as appris dans ta manière de réfléchir ?',
+        placeholder: 'En Philosophie, j\'ai particulièrement aimé travailler sur la notion de justice chez Rawls. Ça m\'a appris à nuancer mon raisonnement et à considérer plusieurs points de vue avant de conclure...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
+      // Organisation (commun)
       {
-        id: 'engagementConcret',
+        id: 'organisation',
         type: 'text',
-        label: 'Décris un engagement extra-scolaire concret (délégué, association, bénévolat...).',
-        placeholder: 'Bénévole aux Restos du Cœur depuis 2 ans, délégué de classe en Première et Terminale...',
+        label: 'Comment t\'organises-tu concrètement pour travailler (planning, régularité, volume horaire) ? Donne un exemple de période où tu as maintenu cet effort sur plusieurs semaines ou géré une situation de pression. Qu\'en as-tu retenu ?',
+        placeholder: 'Je travaille 2h chaque soir après les cours et 4h le week-end. Pendant les révisions du bac blanc, j\'ai tenu ce rythme pendant 3 semaines. J\'ai appris que la régularité compte plus que les longues sessions de dernière minute...',
+        required: true,
+      },
+      // Activité régulière (commun)
+      {
+        id: 'activiteReguliere',
+        type: 'text',
+        label: 'Décris une activité régulière (sport, musique, engagement, job, aide familiale…) et ce qu\'elle t\'a appris sur ta façon de travailler ou de persévérer.',
+        placeholder: 'Je fais du handball en club depuis 6 ans, avec 2 entraînements par semaine. Ça m\'a appris à gérer la fatigue, à rester concentré même quand je suis fatigué, et à m\'adapter aux imprévus pendant les matchs...',
         required: true,
       },
     ],
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BLOC 3 : PROJET & MOTIVATION
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: 3,
     title: 'Projet & Motivation',
     shortTitle: 'Projet',
     questions: [
-      // PASS - projetSante
-      {
-        id: 'projetSante',
-        type: 'text',
-        label: 'As-tu réalisé un projet ou une expérience en lien avec la santé (stage, TPE, bénévolat...) ? Comment cela a-t-il confirmé ton choix ?',
-        placeholder: 'Mon stage d\'observation de 3 jours en cabinet de médecine générale m\'a permis de voir la relation médecin-patient au quotidien et de confirmer que c\'est cette proximité humaine qui me motive...',
-        required: true,
-        condition: { field: 'parcours', value: 'PASS' },
-      },
-      // LAS - projetSante
-      {
-        id: 'projetSanteLAS',
-        type: 'text',
-        label: 'As-tu réalisé un projet ou une expérience en lien avec ta licence ou la santé ? Comment cela a-t-il confirmé ton choix de double parcours ?',
-        placeholder: 'Mon stage en cabinet d\'avocat spécialisé en droit médical m\'a montré comment le droit et la santé se complètent. Cela a confirmé mon envie de combiner ces deux disciplines via la LAS Droit...',
-        required: true,
-        condition: { field: 'parcours', value: 'LAS' },
-      },
-      {
-        id: 'motivationMedecine',
-        type: 'text',
-        label: 'Quelles sont tes raisons profondes de vouloir devenir médecin ?',
-        placeholder: 'À 12 ans, j\'ai accompagné ma grand-mère à ses rendez-vous médicaux. Observer le médecin prendre le temps de lui expliquer sa maladie m\'a donné envie de créer ce même lien de confiance...',
-        required: true,
-        condition: { field: 'parcours', value: 'PASS' },
-      },
-      {
-        id: 'mineureCoherence',
-        type: 'text',
-        label: 'Est-ce que ta mineure {value} a un lien avec ce que tu veux faire plus tard ? Si oui, détaille-le.',
-        labelField: 'sousVoeuxDetail',
-        placeholder: 'J\'ai choisi la mineure Droit de la santé car elle me permettra de comprendre les enjeux éthiques et juridiques de la pratique médicale...',
-        required: false,
-        condition: { field: 'sousVoeuxMultiple', value: false },
-      },
+      // PASS - motivationSante
       {
         id: 'motivationSante',
         type: 'text',
-        label: 'Pourquoi veux-tu accéder aux études de santé ?',
-        placeholder: 'L\'accompagnement de mon grand-père pendant sa maladie m\'a fait découvrir l\'importance du lien soignant-patient. Je veux exercer un métier où je peux avoir cet impact humain au quotidien...',
+        label: 'À quel moment as-tu commencé à envisager sérieusement des études de santé, et qu\'est-ce qui t\'attire concrètement dans le métier ?',
+        placeholder: 'En Seconde, après avoir accompagné ma mère à ses rendez-vous médicaux. Ce qui m\'attire, c\'est le contact humain quotidien et le fait de pouvoir expliquer, rassurer, aider concrètement les gens...',
+        required: true,
+        condition: { field: 'parcours', value: 'PASS' },
+      },
+      // LAS - projetPro
+      {
+        id: 'projetPro',
+        type: 'text',
+        label: 'Quel projet professionnel envisages-tu avec cette licence ?',
+        placeholder: 'Je me vois avocat spécialisé en droit médical, ou médecin avec une expertise juridique. Les deux voies m\'intéressent...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
+      // PASS - experienceSante
+      {
+        id: 'experienceSante',
+        type: 'text',
+        label: 'As-tu eu une expérience en lien avec la santé ou l\'aide aux autres (stage, bénévolat, accompagnement d\'un proche…) ? Si oui, qu\'as-tu compris de nouveau ?',
+        placeholder: 'J\'ai fait un stage de 3 jours chez un médecin généraliste. J\'ai compris que le métier, c\'est autant écouter que soigner. Le médecin passait du temps à reformuler, à s\'assurer que le patient avait compris...',
+        required: true,
+        condition: { field: 'parcours', value: 'PASS' },
+      },
+      // LAS - interetSante
+      {
+        id: 'interetSante',
+        type: 'text',
+        label: 'Pourquoi as-tu choisi d\'ajouter l\'option santé à ta licence ?',
+        placeholder: 'Le contact humain et l\'envie d\'aider les autres m\'attirent. Garder l\'option santé me permet de ne pas fermer cette porte...',
+        required: true,
+        condition: { field: 'parcours', value: 'LAS' },
+      },
+      // PASS - planB
+      {
+        id: 'planB',
+        type: 'text',
+        label: 'Si tu n\'accèdes pas aux filières santé après cette année, quelle poursuite d\'études envisages-tu ?',
+        placeholder: 'Je continuerais en licence de Biologie pour retenter ma chance en L2 via une passerelle. La biologie m\'intéresse vraiment, et ça me permettrait de garder un lien avec le domaine scientifique...',
+        required: true,
+        condition: { field: 'parcours', value: 'PASS' },
+      },
+      // LAS - lienLicenceSante
       {
         id: 'lienLicenceSante',
         type: 'text',
-        label: 'Quel lien fais-tu entre ta licence et la santé ?',
-        placeholder: 'Ma licence de Droit me donnera une compréhension des enjeux juridiques et éthiques de la médecine. Ces compétences seront précieuses pour accompagner mes patients dans leurs droits...',
-        required: true,
-        condition: { field: 'parcours', value: 'LAS' },
-      },
-      {
-        id: 'activiteIntensiveLAS',
-        type: 'text',
-        label: 'Pratiques-tu une activité intensive (sport, musique...) ? Si oui, décris-la et ce qu\'elle t\'apporte.',
-        placeholder: 'Je fais du tennis en compétition depuis 8 ans (niveau régional). Cette pratique m\'a appris la persévérance et la gestion du stress, des qualités essentielles pour gérer ma double licence...',
+        label: 'Quel lien fais-tu entre ta licence et la santé ? En quoi cette double compétence pourrait être utile ?',
+        placeholder: 'Ma licence de Droit me donnera une compréhension des enjeux juridiques et éthiques de la médecine : responsabilité médicale, droits des patients, bioéthique. Ces compétences seront utiles pour accompagner mes patients dans leurs droits...',
         required: true,
         condition: { field: 'parcours', value: 'LAS' },
       },
     ],
   },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BLOC 4 : LA FACULTÉ
+  // ═══════════════════════════════════════════════════════════════════════════
   {
     id: 4,
     title: 'La faculté',
@@ -276,22 +283,22 @@ export const blocks: Block[] = [
       {
         id: 'jpo',
         type: 'boolean',
-        label: 'As-tu participé à une JPO de cette université ?',
+        label: 'As-tu participé à une JPO ou échangé avec des étudiants/enseignants de cette faculté ?',
         required: true,
       },
       {
         id: 'jpoRetenu',
         type: 'text',
-        label: 'Qu\'as-tu retenu de cette JPO ?',
-        placeholder: 'J\'ai discuté avec un étudiant en 2ème année qui m\'a expliqué le système de tutorat. Son enthousiasme et ses conseils m\'ont convaincu que cette fac accompagne vraiment ses étudiants...',
+        label: 'Cite un élément concret que tu as découvert sur l\'organisation de la formation ou la vie étudiante.',
+        placeholder: 'J\'ai appris que la fac propose des groupes de travail encadrés par des tuteurs de 2ème année. Un étudiant m\'a dit que ça l\'avait beaucoup aidé à trouver sa méthode en début d\'année...',
         required: true,
         condition: { field: 'jpo', value: true },
       },
       {
         id: 'attractionFac',
         type: 'text',
-        label: 'Qu\'est-ce qui fait de cette faculté l\'environnement idéal pour ta réussite ?',
-        placeholder: 'Le tutorat organisé par les étudiants de 2ème année me permettra d\'avoir un accompagnement personnalisé et des conseils de méthodologie adaptés au programme de cette faculté...',
+        label: 'Qu\'est-ce que cette faculté propose qui pourrait t\'aider à progresser (tutorat, organisation, accompagnement, ambiance…) ?',
+        placeholder: 'Le tutorat par les étudiants de 2ème année me rassure car j\'aurai des conseils de gens qui sont passés par là récemment. L\'organisation en petits groupes pour les TD me convient aussi...',
         required: true,
       },
     ],

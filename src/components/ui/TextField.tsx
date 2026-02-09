@@ -1,16 +1,18 @@
 import { forwardRef } from 'react';
-import type { InputHTMLAttributes } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
 interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+  label: ReactNode;
   error?: string;
   multiline?: boolean;
   rows?: number;
 }
 
+let fieldCounter = 0;
+
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, error, multiline, rows = 3, className = '', id, ...props }, ref) => {
-    const inputId = id || `field-${label.toLowerCase().replace(/\s+/g, '-')}`;
+    const inputId = id || `field-${++fieldCounter}`;
 
     const baseStyles = `
       w-full px-4 py-3
@@ -27,7 +29,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
       <div className={`w-full ${className}`}>
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-text-primary mb-2"
+          className="block text-sm font-medium text-text-primary mb-2 whitespace-pre-line"
         >
           {label}
           {props.required && <span className="text-red-500 ml-1">*</span>}

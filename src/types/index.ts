@@ -2,7 +2,7 @@
 
 export type Parcours = 'PASS' | 'LAS';
 
-export type QuestionType = 'text' | 'dropdown' | 'number' | 'boolean';
+export type QuestionType = 'text' | 'dropdown' | 'number' | 'boolean' | 'info';
 
 export interface QuestionCondition {
   field: string;
@@ -45,6 +45,8 @@ export interface Question {
   inlineWith?: string;
   // Pour exclure la valeur sélectionnée d'un autre dropdown
   excludeFrom?: string;
+  // Pour insérer la valeur d'un autre champ dans le label (remplace {value})
+  labelField?: string;
 }
 
 export interface Block {
@@ -98,20 +100,54 @@ export interface FormState {
 export interface PopupFormData {
   email: string;
   telephone: string;
-  interetPrepa: 'oui-definitivement' | 'oui-peut-etre' | 'non' | 'je-ne-sais-pas';
+  prenom: string;
+  userType?: 'parent' | 'eleve';
+  consent?: 'oui' | 'non';
 }
 
-export interface N8nFormPayload {
+// Structure commune pour les deux parcours
+interface BaseFormPayload {
   parcours: Parcours;
   university: string;
-  sousVoeux?: number;
-  licenceMajeure?: string;
-  [key: string]: string | number | boolean | undefined;
+  specialite1: string;
+  moyenne1: number;
+  specialite2: string;
+  moyenne2: number;
+  organisation: string;
+  activiteReguliere: string;
+  jpo: boolean;
+  jpoRetenu?: string; // Si jpo = true
+  attractionFac: string;
 }
+
+// Structure spécifique PASS
+export interface PassFormPayload extends BaseFormPayload {
+  parcours: 'PASS';
+  mineures: string;
+  projetScientifique: string;
+  motivationSante: string;
+  experienceSante: string;
+  planB: string;
+}
+
+// Structure spécifique LAS
+export interface LasFormPayload extends BaseFormPayload {
+  parcours: 'LAS';
+  licenceMajeure: string;
+  motivationLicence: string;
+  projetAcademique: string;
+  projetPro: string;
+  interetSante: string;
+  lienLicenceSante: string;
+}
+
+// Union type pour le payload
+export type N8nFormPayload = PassFormPayload | LasFormPayload;
 
 export interface N8nFormResponse {
   success: boolean;
-  letter?: string;
+  lettre?: string;
+  letter?: string; // fallback
   error?: string;
 }
 

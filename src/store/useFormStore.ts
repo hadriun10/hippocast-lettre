@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import type { FormState, Parcours, BlockStatus } from '../types';
 import { getRandomEncouragingMessage } from '../config/questions.config';
 
-export type GenerationPhase = 'idle' | 'loading' | 'letter' | 'popup' | 'complete';
+export type GenerationPhase = 'idle' | 'loading' | 'letter' | 'popup' | 'waiting' | 'complete';
 
 const initialBlockStatuses: BlockStatus[] = ['active', 'pending', 'pending', 'pending'];
 

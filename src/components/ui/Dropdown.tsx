@@ -23,10 +23,12 @@ export function Dropdown({
   disabled,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCustom, setIsCustom] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const selectedOption = options.find((opt) => opt.value === value);
+  const selectedOption = !isCustom ? options.find((opt) => opt.value === value) : null;
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -38,6 +40,12 @@ export function Dropdown({
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isCustom && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isCustom]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
@@ -51,7 +59,13 @@ export function Dropdown({
   };
 
   const handleOptionClick = (optionValue: string) => {
-    onChange(optionValue);
+    if (optionValue === 'autre') {
+      setIsCustom(true);
+      onChange('');
+    } else {
+      setIsCustom(false);
+      onChange(optionValue);
+    }
     setIsOpen(false);
     buttonRef.current?.focus();
   };
@@ -62,6 +76,42 @@ export function Dropdown({
       handleOptionClick(optionValue);
     }
   };
+
+  const handleBackToDropdown = () => {
+    setIsCustom(false);
+    onChange('');
+  };
+
+  if (isCustom) {
+    return (
+      <div className="w-full">
+        <label className="block text-sm font-medium text-text-primary mb-2">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </label>
+        <div className="flex gap-2">
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="Précise ta spécialité..."
+            className="flex-1 px-4 py-3 bg-white border-2 border-border rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent transition-colors duration-200"
+          />
+          <button
+            type="button"
+            onClick={handleBackToDropdown}
+            className="px-3 py-3 text-text-secondary hover:text-text-primary border-2 border-border rounded-lg transition-colors duration-200"
+            title="Revenir à la liste"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full" ref={dropdownRef} style={{ position: isOpen ? 'relative' : 'static', zIndex: isOpen ? 9999 : 'auto' }}>

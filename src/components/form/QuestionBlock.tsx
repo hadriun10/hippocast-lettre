@@ -81,6 +81,9 @@ export function QuestionBlock({ block, isLastBlock, onComplete, onGenerate }: Qu
 
   // Helper pour vérifier si un groupe est complet
   const isGroupComplete = (group: QuestionGroup) => {
+    if (group.main.type === 'info') return true;
+    if (!group.main.required) return true;
+
     const mainValue = answers[group.main.id];
     const mainFilled = mainValue !== undefined && mainValue !== null && mainValue !== '';
 
