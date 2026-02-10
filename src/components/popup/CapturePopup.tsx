@@ -30,6 +30,7 @@ const formatPhoneNumber = (value: string): string => {
 };
 
 export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps) {
+  const [userType, setUserType] = useState<'parent' | 'eleve' | null>(null);
   const [prenom, setPrenom] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
@@ -38,6 +39,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Visible fields tracking (progressive reveal)
+  const [showPrenom, setShowPrenom] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [showTelephone, setShowTelephone] = useState(false);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -55,7 +57,14 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
   const [showConsentModal1, setShowConsentModal1] = useState(false);
   const [showConsentModal2, setShowConsentModal2] = useState(false);
 
-  // Progressive field reveal - email after prenom
+  // Progressive field reveal - prenom after userType selection
+  useEffect(() => {
+    if (userType && !showPrenom) {
+      setTimeout(() => setShowPrenom(true), 300);
+    }
+  }, [userType, showPrenom]);
+
+  // Email after prenom
   useEffect(() => {
     if (prenom.length >= 2 && !showEmail) {
       setTimeout(() => setShowEmail(true), 300);
@@ -148,6 +157,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
       email,
       telephone: countryCode + ' ' + telephone,
       prenom,
+      userType: userType || 'eleve',
       consent,
     });
   };
@@ -178,6 +188,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
 
   const phoneDigits = telephone.replace(/\s/g, '');
   const isFormValid =
+    userType &&
     prenom.length >= 2 &&
     email &&
     EMAIL_REGEX.test(email) &&
@@ -215,20 +226,53 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
               </div>
 
               <div className="space-y-4">
-                {/* Prenom - shown directly */}
+                {/* Parent ou Élève - shown directly */}
                 <div className="animate-fade-in">
                   <label className="block text-sm font-medium text-text-primary mb-2">
-                    Ton prenom :
+                    Tu es :
                   </label>
-                  <input
-                    type="text"
-                    value={prenom}
-                    onChange={(e) => setPrenom(e.target.value)}
-                    placeholder="Thomas"
-                    className="w-full px-4 py-3 bg-white border-2 border-border rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
-                  />
-                  {errors.prenom && <p className="mt-1.5 text-sm text-red-500">{errors.prenom}</p>}
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setUserType('eleve')}
+                      className={`flex-1 px-4 py-3 rounded-lg border-2 font-medium transition-all ${
+                        userType === 'eleve'
+                          ? 'border-violet bg-violet text-white'
+                          : 'border-border bg-white text-text-primary hover:border-violet'
+                      }`}
+                    >
+                      Élève
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setUserType('parent')}
+                      className={`flex-1 px-4 py-3 rounded-lg border-2 font-medium transition-all ${
+                        userType === 'parent'
+                          ? 'border-violet bg-violet text-white'
+                          : 'border-border bg-white text-text-primary hover:border-violet'
+                      }`}
+                    >
+                      Parent
+                    </button>
+                  </div>
                 </div>
+
+                {/* Prenom - shown after userType selection */}
+                {showPrenom && (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-text-primary mb-2">
+                      {userType === 'parent' ? 'Ton prénom :' : 'Ton prenom :'}
+                    </label>
+                    <input
+                      type="text"
+                      value={prenom}
+                      onChange={(e) => setPrenom(e.target.value)}
+                      placeholder="Thomas"
+                      className="w-full px-4 py-3 bg-white border-2 border-border rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
+                    />
+                    {errors.prenom && <p className="mt-1.5 text-sm text-red-500">{errors.prenom}</p>}
+                  </div>
+                )}
 
                 {/* Email */}
                 {showEmail && (
