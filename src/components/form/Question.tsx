@@ -108,6 +108,7 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
           value={(value as string) || ''}
           onChange={handleSelectChange}
           required={question.required}
+          searchable={question.searchable}
         />
       )}
 

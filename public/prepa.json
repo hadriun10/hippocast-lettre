@@ -1,0 +1,98 @@
+[
+  {
+    "nom": "Antémed-Epsilon",
+    "ville": "Paris",
+    "universites": ["paris-cite", "paris-saclay", "sorbonne-nord", "sorbonne", "uvsq"],
+    "lien": "https://rdv.formapriv.fr/antemedepsilon/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Bersot Formation",
+    "ville": "Besançon",
+    "universites": ["besancon"],
+    "lien": "https://rdv.formapriv.fr/bersotformation/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Prépa Vésale",
+    "ville": "Strasbourg",
+    "universites": ["strasbourg"],
+    "lien": "https://rdv.formapriv.fr/prepavesale/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Prépa Défi",
+    "ville": "Angers",
+    "universites": ["angers"],
+    "lien": "https://rdv.formapriv.fr/prepadefi/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Stan Santé",
+    "ville": "Nancy",
+    "universites": ["nancy"],
+    "lien": "https://rdv.formapriv.fr/stansante/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "SEGMO",
+    "ville": "Rouen",
+    "universites": ["rouen"],
+    "lien": "https://rdv.formapriv.fr/segmo/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "CAPPEC",
+    "ville": "Lille",
+    "universites": ["lille-etat"],
+    "lien": "https://rdv.formapriv.fr/cappec/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "CEPSUP",
+    "ville": "Reims",
+    "universites": ["reims"],
+    "lien": "https://rdv.formapriv.fr/cepsup/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "SupDijon",
+    "ville": "Dijon",
+    "universites": ["dijon"],
+    "lien": "https://rdv.formapriv.fr/supdijon/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Supexam Nantes",
+    "ville": "Nantes",
+    "universites": ["nantes"],
+    "lien": "https://rdv.formapriv.fr/supexamnantes/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Ipésanté",
+    "ville": "Poitiers",
+    "universites": ["poitiers"],
+    "lien": "https://rdv.formapriv.fr/ipesante/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "SkolSanté",
+    "ville": "Rennes",
+    "universites": ["rennes"],
+    "lien": "https://rdv.formapriv.fr/skolsante/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Paracelse",
+    "ville": "Lyon",
+    "universites": ["lyon"],
+    "lien": "https://rdv.formapriv.fr/paracelse/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Prépa Santé B",
+    "ville": "Clermont-Ferrand",
+    "universites": ["clermont-ferrand"],
+    "lien": "https://rdv.formapriv.fr/prepasanteb/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Alpha Prépa",
+    "ville": "Amiens",
+    "universites": ["amiens"],
+    "lien": "https://rdv.formapriv.fr/alphaprepa/create/?utm_source=hippocast"
+  },
+  {
+    "nom": "Altimed",
+    "ville": "Grenoble",
+    "universites": ["grenoble"],
+    "lien": "https://rdv.formapriv.fr/altimed/create/?utm_source=hippocast"
+  }
+]

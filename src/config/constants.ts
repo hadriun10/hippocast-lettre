@@ -1,5 +1,7 @@
 // API Configuration
 export const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL || '';
+export const N8N_WEBHOOK_URL_LEAD = import.meta.env.VITE_N8N_WEBHOOK_URL_LEAD || '';
+export const N8N_WEBHOOK_URL_RDV = import.meta.env.VITE_N8N_WEBHOOK_URL_RDV || '';
 export const POSTHOG_KEY = import.meta.env.VITE_POSTHOG_KEY || '';
 export const POSTHOG_HOST = import.meta.env.VITE_POSTHOG_HOST || 'https://eu.posthog.com';
 

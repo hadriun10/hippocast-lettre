@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import type { QuestionOption } from '../../types';
 
 interface DropdownProps {
@@ -10,6 +10,7 @@ interface DropdownProps {
   error?: string;
   required?: boolean;
   disabled?: boolean;
+  searchable?: boolean;
 }
 
 export function Dropdown({
@@ -21,14 +22,27 @@ export function Dropdown({
   error,
   required,
   disabled,
+  searchable = false,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCustom, setIsCustom] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const selectedOption = !isCustom ? options.find((opt) => opt.value === value) : null;
+
+  // Filtrer les options selon la recherche
+  const filteredOptions = useMemo(() => {
+    if (!searchable || !searchQuery.trim()) return options;
+    const query = searchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return options.filter((opt) => {
+      const optLabel = opt.label.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      return optLabel.includes(query);
+    });
+  }, [options, searchQuery, searchable]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -47,6 +61,13 @@ export function Dropdown({
     }
   }, [isCustom]);
 
+  // Réinitialiser la recherche quand le dropdown se ferme
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchQuery('');
+    }
+  }, [isOpen]);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       setIsOpen(false);
@@ -55,6 +76,17 @@ export function Dropdown({
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       setIsOpen(!isOpen);
+    }
+  };
+
+  const handleSearchKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      setIsOpen(false);
+      searchInputRef.current?.blur();
+    }
+    if (e.key === 'Enter' && filteredOptions.length === 1) {
+      e.preventDefault();
+      handleOptionClick(filteredOptions[0].value);
     }
   };
 
@@ -67,7 +99,7 @@ export function Dropdown({
       onChange(optionValue);
     }
     setIsOpen(false);
-    buttonRef.current?.focus();
+    setSearchQuery('');
   };
 
   const handleOptionKeyDown = (e: React.KeyboardEvent, optionValue: string) => {
@@ -80,6 +112,17 @@ export function Dropdown({
   const handleBackToDropdown = () => {
     setIsCustom(false);
     onChange('');
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    if (!isOpen) {
+      setIsOpen(true);
+    }
+  };
+
+  const handleSearchFocus = () => {
+    setIsOpen(true);
   };
 
   if (isCustom) {
@@ -121,35 +164,77 @@ export function Dropdown({
       </label>
 
       <div className="relative" style={{ zIndex: isOpen ? 9999 : 'auto' }}>
-        <button
-          ref={buttonRef}
-          type="button"
-          onClick={() => !disabled && setIsOpen(!isOpen)}
-          onKeyDown={handleKeyDown}
-          disabled={disabled}
-          className={`
-            w-full px-4 py-3 text-left
-            bg-white border-2 rounded-lg
-            flex items-center justify-between
-            focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent
-            transition-colors duration-200
-            disabled:bg-gray-100 disabled:cursor-not-allowed
-            ${error ? 'border-red-500' : 'border-border'}
-            ${!selectedOption ? 'text-text-secondary' : 'text-text-primary'}
-          `}
-          aria-haspopup="listbox"
-          aria-expanded={isOpen}
-        >
-          <span>{selectedOption?.label || placeholder}</span>
-          <svg
-            className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* Mode searchable : input qui permet de taper directement */}
+        {searchable ? (
+          <div
+            className={`
+              w-full px-2 md:px-4 py-3
+              bg-white border-2 rounded-lg
+              flex items-center justify-between
+              transition-colors duration-200
+              ${error ? 'border-red-500' : isOpen ? 'border-violet ring-2 ring-violet' : 'border-border'}
+            `}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery || (isOpen ? '' : selectedOption?.label || '')}
+              onChange={handleSearchChange}
+              onFocus={handleSearchFocus}
+              onKeyDown={handleSearchKeyDown}
+              placeholder={selectedOption?.label || placeholder}
+              disabled={disabled}
+              className={`
+                flex-1 min-w-0 bg-transparent outline-none truncate
+                ${!searchQuery && !isOpen && selectedOption ? 'text-text-primary' : ''}
+                ${!searchQuery && !selectedOption ? 'text-text-secondary' : 'text-text-primary'}
+                placeholder:text-text-secondary
+                disabled:cursor-not-allowed
+              `}
+            />
+            <svg
+              className={`w-5 h-5 text-text-secondary transition-transform duration-200 flex-shrink-0 ml-2 ${isOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              onClick={() => !disabled && setIsOpen(!isOpen)}
+              style={{ cursor: 'pointer' }}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        ) : (
+          /* Mode normal : bouton classique */
+          <button
+            ref={buttonRef}
+            type="button"
+            onClick={() => !disabled && setIsOpen(!isOpen)}
+            onKeyDown={handleKeyDown}
+            disabled={disabled}
+            className={`
+              w-full px-2 md:px-4 py-3 text-left
+              bg-white border-2 rounded-lg
+              flex items-center justify-between
+              focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent
+              transition-colors duration-200
+              disabled:bg-gray-100 disabled:cursor-not-allowed
+              ${error ? 'border-red-500' : 'border-border'}
+              ${!selectedOption ? 'text-text-secondary' : 'text-text-primary'}
+            `}
+            aria-haspopup="listbox"
+            aria-expanded={isOpen}
+          >
+            <span className="truncate">{selectedOption?.label || placeholder}</span>
+            <svg
+              className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        )}
 
         {isOpen && (
           <ul
@@ -157,34 +242,40 @@ export function Dropdown({
             style={{ zIndex: 99999 }}
             role="listbox"
           >
-            {options.map((option) => (
-              <li
-                key={option.value}
-                role="option"
-                aria-selected={value === option.value}
-                tabIndex={0}
-                onClick={() => handleOptionClick(option.value)}
-                onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
-                className={`
-                  px-4 py-3 cursor-pointer
-                  flex items-center justify-between
-                  hover:bg-violet-light
-                  focus:bg-violet-light focus:outline-none
-                  ${value === option.value ? 'bg-violet-light' : ''}
-                `}
-              >
-                <span>{option.label}</span>
-                {value === option.value && (
-                  <svg className="w-5 h-5 text-violet" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
+            {filteredOptions.length === 0 ? (
+              <li className="px-4 py-3 text-text-secondary text-sm">
+                Aucun résultat
               </li>
-            ))}
+            ) : (
+              filteredOptions.map((option) => (
+                <li
+                  key={option.value}
+                  role="option"
+                  aria-selected={value === option.value}
+                  tabIndex={0}
+                  onClick={() => handleOptionClick(option.value)}
+                  onKeyDown={(e) => handleOptionKeyDown(e, option.value)}
+                  className={`
+                    px-4 py-3 cursor-pointer
+                    flex items-center justify-between
+                    hover:bg-violet-light
+                    focus:bg-violet-light focus:outline-none
+                    ${value === option.value ? 'bg-violet-light' : ''}
+                  `}
+                >
+                  {value === option.value && (
+                    <svg className="w-5 h-5 text-violet mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                  <span className={value === option.value ? 'font-medium' : ''}>{option.label}</span>
+                </li>
+              ))
+            )}
           </ul>
         )}
       </div>

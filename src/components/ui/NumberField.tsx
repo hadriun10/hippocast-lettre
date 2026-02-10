@@ -60,9 +60,9 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(
           disabled={disabled}
           placeholder={placeholder}
           className={`
-            w-24 px-4 py-3
+            w-full px-2 md:px-4 py-3
             bg-white border-2 rounded-lg
-            text-text-primary placeholder:text-text-secondary
+            text-text-primary placeholder:text-text-secondary text-center
             focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent
             transition-colors duration-200
             disabled:bg-gray-100 disabled:cursor-not-allowed

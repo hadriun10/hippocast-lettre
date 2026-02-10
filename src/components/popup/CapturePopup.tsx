@@ -253,22 +253,22 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                     <label className="block text-sm font-medium text-text-primary mb-2">
                       A quel numero on t'envoie <span className="font-bold">ta lettre</span> ?
                     </label>
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5">
                       {/* Country selector */}
-                      <div className="relative">
+                      <div className="relative flex-shrink-0">
                         <button
                           type="button"
                           onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                          className="flex items-center gap-1 px-3 py-3 bg-white border-2 border-border rounded-lg text-text-primary hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
+                          className="flex items-center gap-0.5 px-2 py-3 bg-white border-2 border-border rounded-lg text-text-primary hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
                         >
-                          <span className="text-lg">{selectedCountry.flag}</span>
-                          <span className="text-sm">{selectedCountry.code}</span>
-                          <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <span className="text-base">{selectedCountry.flag}</span>
+                          <span className="text-xs">{selectedCountry.code}</span>
+                          <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                           </svg>
                         </button>
                         {showCountryDropdown && (
-                          <div className="absolute top-full left-0 mt-1 w-48 bg-white border-2 border-border rounded-lg shadow-lg z-10">
+                          <div className="absolute top-full left-0 mt-1 w-44 bg-white border-2 border-border rounded-lg shadow-lg z-10">
                             {COUNTRY_CODES.map((country) => (
                               <button
                                 key={country.code}
@@ -277,11 +277,11 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                                   setCountryCode(country.code);
                                   setShowCountryDropdown(false);
                                 }}
-                                className="flex items-center gap-2 w-full px-3 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
+                                className="flex items-center gap-1.5 w-full px-2 py-2 text-left hover:bg-gray-50 first:rounded-t-lg last:rounded-b-lg"
                               >
-                                <span className="text-lg">{country.flag}</span>
-                                <span className="text-sm">{country.code}</span>
-                                <span className="text-sm text-gray-500">{country.name}</span>
+                                <span className="text-base">{country.flag}</span>
+                                <span className="text-xs">{country.code}</span>
+                                <span className="text-xs text-gray-500">{country.name}</span>
                               </button>
                             ))}
                           </div>
@@ -292,8 +292,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                         type="tel"
                         value={telephone}
                         onChange={handlePhoneChange}
-                        placeholder="6 12 34 56 78"
-                        className="flex-1 px-4 py-3 bg-white border-2 border-border rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
+                        placeholder="06 12 34 56 78"
+                        className="flex-1 min-w-0 px-3 py-3 bg-white border-2 border-border rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-violet focus:border-transparent"
                       />
                     </div>
                     {errors.telephone && <p className="mt-1.5 text-sm text-red-500">{errors.telephone}</p>}
@@ -382,8 +382,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                     isLoading={isLoading}
                   >
                     <div className="flex flex-col items-center">
-                      <span>Recevoir ma lettre personnalisee</span>
-                      <span className="text-sm opacity-90">et mon plan d'action pour progresser</span>
+                      <span className="text-base md:text-lg">Recevoir ma lettre</span>
+                      <span className="text-xs md:text-sm opacity-90">et mon plan d'action</span>
                     </div>
                   </Button>
                 </div>

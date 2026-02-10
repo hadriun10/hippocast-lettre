@@ -73,15 +73,10 @@ function App() {
   }, [setGenerationPhase, setGenerating]);
 
   const handleDiscoverLetter = () => {
-    // MODE TEST: déflouter directement sans popup
-    setGenerationPhase('complete');
-    revealLetter();
-    track.letterRevealed();
-
-    // MODE NORMAL (décommenter pour réactiver la popup):
-    // setGenerationPhase('popup');
-    // setShowPopup(true);
-    // track.popupDisplayed();
+    // Afficher la popup de capture avant de révéler la lettre
+    setGenerationPhase('popup');
+    setShowPopup(true);
+    track.popupDisplayed();
   };
 
   const handlePopupSubmit = async (data: PopupFormData) => {
@@ -198,14 +193,14 @@ function App() {
 
       {/* Main Content - Ecran divise en 2 moities */}
       <div className="grid grid-cols-1 md:grid-cols-2 flex-1">
-        {/* Moitie gauche - Form */}
-        <div className="flex justify-end px-8 pb-4">
-          <div className="w-full max-w-[750px] h-[530px] flex flex-col">
+        {/* Moitie gauche - Form (caché sur mobile pendant la génération) */}
+        <div className={`${isInGenerationFlow ? 'hidden md:flex' : 'flex'} md:justify-end px-4 md:px-8 pb-4`}>
+          <div className="w-full max-w-[750px] min-h-0 md:h-[530px] flex flex-col">
             {isInGenerationFlow ? (
               // During generation or complete: show tabs (disabled) + recap
               <>
                 <Tabs disabled />
-                <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-6 relative z-10 flex-1 overflow-y-auto">
+                <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-4 md:p-6 relative z-10 md:flex-1 md:overflow-y-auto">
                   <RecapSummary />
                 </div>
               </>
@@ -223,31 +218,35 @@ function App() {
           </div>
         </div>
 
-        {/* Moitie droite - Preview ou Hippo */}
-        <div className="hidden md:flex justify-start px-8 pb-4">
-          {generationPhase === 'loading' ? (
-            <GenerationLoading onComplete={handleLoadingComplete} />
-          ) : generationPhase === 'waiting' ? (
-            <WaitingScreen />
-          ) : generationPhase === 'letter' || generationPhase === 'popup' || generationPhase === 'complete' ? (
-            <LetterPreview onCopy={handleCopyLetter} onDownload={handleDownloadLetter} onDiscover={handleDiscoverLetter} isBlurred={isLetterBlurred} />
-          ) : (
+        {/* Moitie droite - Preview ou Hippo (visible sur mobile pendant la génération) */}
+        {isInGenerationFlow ? (
+          <div className="flex justify-center md:justify-start px-4 md:px-8 pb-4">
+            {generationPhase === 'loading' ? (
+              <GenerationLoading onComplete={handleLoadingComplete} />
+            ) : generationPhase === 'waiting' ? (
+              <WaitingScreen />
+            ) : (
+              <LetterPreview onCopy={handleCopyLetter} onDownload={handleDownloadLetter} onDiscover={handleDiscoverLetter} isBlurred={isLetterBlurred} />
+            )}
+          </div>
+        ) : (
+          <div className="hidden md:flex justify-start px-8 pb-4">
             <HippoWithSpeechBubble />
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}
-      <footer className="bg-[#f5f0ea] text-text-primary py-6 px-8">
-        <div className="flex justify-between items-start">
-          <div>
+      <footer className="bg-[#f5f0ea] text-text-primary py-4 md:py-6 px-4 md:px-8">
+        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+          <div className="text-center md:text-left">
             <p className="text-sm">
               Un outil cree par <span className="font-bold">Hippocast</span>
             </p>
-            <p className="text-sm text-text-secondary italic">
+            <p className="text-xs md:text-sm text-text-secondary italic">
               Calcule tes chances de reussir PASS/LAS
             </p>
-            <div className="flex gap-4 mt-2 text-sm text-text-secondary">
+            <div className="flex justify-center md:justify-start gap-4 mt-2 text-xs md:text-sm text-text-secondary">
               <a
                 href="https://www.hippocast.fr//cgu-calculateur"
                 target="_blank"
@@ -262,13 +261,13 @@ function App() {
                 rel="noopener noreferrer"
                 className="hover:text-text-primary"
               >
-                Politique de confidentialite
+                Confidentialite
               </a>
             </div>
           </div>
           <a
             href="mailto:contact@hippocast.fr"
-            className="flex items-center gap-2 text-sm hover:text-text-secondary"
+            className="flex items-center justify-center md:justify-start gap-2 text-sm hover:text-text-secondary"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

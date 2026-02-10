@@ -47,6 +47,8 @@ export interface Question {
   excludeFrom?: string;
   // Pour insérer la valeur d'un autre champ dans le label (remplace {value})
   labelField?: string;
+  // Pour activer la recherche dans le dropdown
+  searchable?: boolean;
 }
 
 export interface Block {
@@ -107,7 +109,10 @@ export interface PopupFormData {
 
 // Structure commune pour les deux parcours
 interface BaseFormPayload {
+  userId: string;
+  utmSource: string;
   parcours: Parcours;
+  classe: string;
   university: string;
   specialite1: string;
   moyenne1: number;

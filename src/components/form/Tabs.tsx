@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Tab } from './Tab';
 import type { TabState, BlockStatus } from '../../types';
 import { blocks } from '../../config/questions.config';
@@ -17,12 +17,22 @@ function getTabState(
   return 'upcoming';
 }
 
+// Messages d'erreur selon le bloc à compléter
+const ERROR_MESSAGES: Record<number, string> = {
+  0: 'Complète ton profil avant',
+  1: 'Complète ton parcours avant',
+  2: 'Complète ta méthode de travail avant',
+  3: 'Complète tes expériences avant',
+};
+
 interface TabsProps {
   disabled?: boolean;
 }
 
 export function Tabs({ disabled = false }: TabsProps) {
-  const { currentBlock, blockStatuses, goToBlock, answers } = useFormStore();
+  const { currentBlock, blockStatuses, goToBlock, goToNextBlock, answers } = useFormStore();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorTabIndex, setErrorTabIndex] = useState<number | null>(null);
 
   // Vérifier si le bloc actuel est complété
   const isCurrentBlockComplete = useMemo(() => {
@@ -45,17 +55,55 @@ export function Tabs({ disabled = false }: TabsProps) {
     });
   }, [currentBlock, answers]);
 
+  // Cacher le message d'erreur après 3 secondes
+  useEffect(() => {
+    if (errorMessage) {
+      const timer = setTimeout(() => {
+        setErrorMessage(null);
+        setErrorTabIndex(null);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
+  const handleTabClick = (index: number, state: TabState) => {
+    if (disabled) return;
+
+    // Si l'onglet est accessible, naviguer
+    if (state === 'completed' || state === 'active') {
+      goToBlock(index);
+    } else if (state === 'ready') {
+      // Onglet suivant prêt - utiliser goToNextBlock
+      goToNextBlock();
+    } else {
+      // Onglet non accessible - afficher message d'erreur
+      // Trouver le premier bloc non complété avant celui-ci
+      let blockToComplete = currentBlock;
+      for (let i = 0; i < index; i++) {
+        if (blockStatuses[i] !== 'completed') {
+          blockToComplete = i;
+          break;
+        }
+      }
+      setErrorMessage(ERROR_MESSAGES[blockToComplete] || 'Complète les étapes précédentes');
+      setErrorTabIndex(index);
+    }
+  };
+
   return (
     <div className="flex w-full gap-1 items-end relative">
       {blocks.map((block, index) => {
         const state = getTabState(blockStatuses[index], index, currentBlock, isCurrentBlockComplete);
         return (
-          <Tab
-            key={block.id}
-            title={block.shortTitle}
-            state={disabled ? 'completed' : state}
-            onClick={disabled ? undefined : () => goToBlock(index)}
-          />
+          <div key={block.id} className="flex-1 relative">
+            <Tab
+              title={block.shortTitle}
+              state={disabled ? 'completed' : state}
+              onClick={() => handleTabClick(index, state)}
+              showError={errorTabIndex === index}
+              errorMessage={errorMessage}
+            />
+          </div>
         );
       })}
     </div>

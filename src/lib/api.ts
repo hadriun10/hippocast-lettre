@@ -1,5 +1,5 @@
 import type { N8nFormPayload, N8nFormResponse, N8nPopupPayload, N8nPopupResponse, PopupFormData, PassFormPayload, LasFormPayload } from '../types';
-import { N8N_WEBHOOK_URL, API_TIMEOUT } from '../config/constants';
+import { N8N_WEBHOOK_URL, N8N_WEBHOOK_URL_LEAD, N8N_WEBHOOK_URL_RDV, API_TIMEOUT } from '../config/constants';
 import { useFormStore } from '../store/useFormStore';
 import { SPECIALITES, UNIVERSITES } from '../config/questions.config';
 
@@ -68,7 +68,7 @@ export async function submitPopup(popupData: PopupFormData, formData: N8nFormPay
   };
 
   try {
-    const response = await fetch(N8N_WEBHOOK_URL, {
+    const response = await fetch(N8N_WEBHOOK_URL_LEAD, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -107,9 +107,30 @@ function getLabel(value: string, options: { value: string; label: string }[]): s
   return options.find((opt) => opt.value === value)?.label || value;
 }
 
+// Génère un userId unique
+function generateUserId(): string {
+  return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+// Récupère l'utm_source de l'URL
+function getUtmSource(): string {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('utm_source') || '';
+}
+
 // Helper to build form payload from store
 export function buildFormPayload(): N8nFormPayload {
-  const { answers, parcours } = useFormStore.getState();
+  let { userId } = useFormStore.getState();
+  const { answers, parcours, setUserId } = useFormStore.getState();
+
+  // Générer le userId au moment de l'envoi s'il n'existe pas
+  if (!userId) {
+    userId = generateUserId();
+    setUserId(userId);
+  }
+
+  // Récupérer l'utm_source
+  const utmSource = getUtmSource();
 
   // Récupérer les labels au lieu des values pour les dropdowns
   const universityLabel = getLabel(answers.university as string, UNIVERSITES);
@@ -118,6 +139,9 @@ export function buildFormPayload(): N8nFormPayload {
 
   // Base commune
   const basePayload = {
+    userId,
+    utmSource,
+    classe: answers.classe as string,
     university: universityLabel,
     specialite1: specialite1Label,
     moyenne1: Number(answers.moyenne1),
@@ -153,5 +177,43 @@ export function buildFormPayload(): N8nFormPayload {
       lienLicenceSante: answers.lienLicenceSante as string,
     };
     return lasPayload;
+  }
+}
+
+// Envoie un poke à n8n quand l'utilisateur clique sur "Faire relire ma lettre" (une seule fois par userId)
+export async function notifyRdvClick(prepaNom: string, prepaVille: string): Promise<void> {
+  if (!N8N_WEBHOOK_URL_RDV) return;
+
+  const { userId, answers, parcours } = useFormStore.getState();
+
+  // Vérifier si on a déjà envoyé pour cet userId
+  const storageKey = `rdv_notified_${userId}`;
+  if (localStorage.getItem(storageKey)) return;
+
+  const universityLabel = getLabel(answers.university as string, UNIVERSITES);
+
+  try {
+    await fetch(N8N_WEBHOOK_URL_RDV, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type: 'rdv_prepa_click',
+        userId,
+        prepaNom,
+        prepaVille,
+        university: universityLabel,
+        parcours,
+        classe: answers.classe as string,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+
+    // Marquer comme envoyé
+    localStorage.setItem(storageKey, 'true');
+  } catch (error) {
+    // Silently fail - on ne bloque pas l'utilisateur si le webhook échoue
+    console.error('Failed to notify RDV click:', error);
   }
 }

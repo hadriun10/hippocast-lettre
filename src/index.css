@@ -119,3 +119,41 @@ body {
 .animate-loading-bar {
   animation: loadingBar 3s ease-out infinite;
 }
+
+/* Shiny button effect */
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
+}
+
+.btn-shiny {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4a3580 0%, #6b4fb0 50%, #4a3580 100%);
+  box-shadow: 0 4px 15px rgba(74, 53, 128, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-shiny::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shine 3s infinite;
+}
+
+.btn-shiny:hover {
+  box-shadow: 0 6px 20px rgba(74, 53, 128, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}

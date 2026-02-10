@@ -131,11 +131,11 @@ export function QuestionBlock({ block, isLastBlock, onComplete, onGenerate }: Qu
   }, [groupsToShow, isBlockComplete]);
 
   return (
-    <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-6 md:p-8 relative z-10 flex-1 overflow-y-auto" ref={scrollRef}>
+    <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-4 md:p-8 relative z-10 md:flex-1 md:overflow-y-auto" ref={scrollRef}>
       <div className="space-y-4">
         {questionGroups.slice(0, groupsToShow).map((group) => (
-          <div key={group.main.id} className={group.inline ? 'flex gap-4 items-end' : ''}>
-            <div className={group.inline ? 'flex-1' : ''}>
+          <div key={group.main.id} className={group.inline ? 'flex gap-2 md:gap-4 items-end' : ''}>
+            <div className={group.inline ? 'flex-1 min-w-0' : ''}>
               <Question
                 question={group.main}
                 isVisible={true}
@@ -143,7 +143,7 @@ export function QuestionBlock({ block, isLastBlock, onComplete, onGenerate }: Qu
               />
             </div>
             {group.inline && (
-              <div className="w-24">
+              <div className="w-16 md:w-24 flex-shrink-0">
                 <Question
                   question={group.inline}
                   isVisible={true}

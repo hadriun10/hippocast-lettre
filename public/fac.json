@@ -1,0 +1,893 @@
+[
+    {
+      "nom": "Marseille (Aix)",
+      "pass": {
+        "candidats": 1630,
+        "admis": 474,
+        "tauxReussite": 29.08,
+        "repartitionMMOPK": {
+          "medecine": 256,
+          "pharmacie": 86,
+          "kinesitherapie": 75,
+          "odontologie": 37,
+          "maieutique": 20
+        }
+      },
+      "las": {
+        "candidats": 831,
+        "admis": 111,
+        "tauxReussite": 13.36,
+        "repartitionMMOPK": {
+          "medecine": 256,
+          "pharmacie": 86,
+          "kinesitherapie": 75,
+          "odontologie": 37,
+          "maieutique": 20
+        }
+      }
+    },
+    {
+      "nom": "Nantes",
+      "pass": {
+        "candidats": 758,
+        "admis": 220,
+        "tauxReussite": 29.02,
+        "repartitionMMOPK": {
+          "medecine": 110,
+          "pharmacie": 54,
+          "kinesitherapie": 25,
+          "odontologie": 19,
+          "maieutique": 12
+        }
+      },
+      "las": {
+        "candidats": 416,
+        "admis": 144,
+        "tauxReussite": 34.62,
+        "repartitionMMOPK": {
+          "medecine": 110,
+          "pharmacie": 54,
+          "kinesitherapie": 25,
+          "odontologie": 19,
+          "maieutique": 12
+        }
+      }
+    },
+    {
+      "nom": "Sorbonne Nord (Paris)",
+      "pass": {
+        "candidats": 355,
+        "admis": 108,
+        "tauxReussite": 30.42,
+        "repartitionMMOPK": {
+          "medecine": 65,
+          "pharmacie": 28,
+          "kinesitherapie": 4,
+          "odontologie": 7,
+          "maieutique": 4
+        }
+      },
+      "las": {
+        "candidats": 505,
+        "admis": 93,
+        "tauxReussite": 18.42,
+        "repartitionMMOPK": {
+          "medecine": 65,
+          "pharmacie": 28,
+          "kinesitherapie": 4,
+          "odontologie": 7,
+          "maieutique": 4
+        }
+      }
+    },
+    {
+      "nom": "Sorbonne Université (Paris)",
+      "pass": {
+        "candidats": 1400,
+        "admis": 300,
+        "tauxReussite": 24.14,
+        "repartitionMMOPK": {
+          "medecine": 215,
+          "pharmacie": 57,
+          "kinesitherapie": 0,
+          "odontologie": 15,
+          "maieutique": 13
+        }
+      },
+      "las": {
+        "candidats": 325,
+        "admis": 21,
+        "tauxReussite": 6.46,
+        "repartitionMMOPK": {
+          "medecine": 215,
+          "pharmacie": 57,
+          "kinesitherapie": 0,
+          "odontologie": 15,
+          "maieutique": 13
+        }
+      }
+    },
+    {
+      "nom": "Lyon",
+      "pass": {
+        "candidats": 1725,
+        "admis": 660,
+        "tauxReussite": 38.26,
+        "repartitionMMOPK": {
+          "medecine": 470,
+          "pharmacie": 97,
+          "kinesitherapie": 37,
+          "odontologie": 31,
+          "maieutique": 25
+        }
+      },
+      "las": {
+        "candidats": 545,
+        "admis": 217,
+        "tauxReussite": 39.82,
+        "repartitionMMOPK": {
+          "medecine": 470,
+          "pharmacie": 97,
+          "kinesitherapie": 37,
+          "odontologie": 31,
+          "maieutique": 25
+        }
+      }
+    },
+    {
+      "nom": "Clermont-Ferrand",
+      "pass": {
+        "candidats": 620,
+        "admis": 216,
+        "tauxReussite": 34.84,
+        "repartitionMMOPK": {
+          "medecine": 113,
+          "pharmacie": 45,
+          "kinesitherapie": 15,
+          "odontologie": 29,
+          "maieutique": 14
+        }
+      },
+      "las": {
+        "candidats": 400,
+        "admis": 69,
+        "tauxReussite": 17.25,
+        "repartitionMMOPK": {
+          "medecine": 113,
+          "pharmacie": 45,
+          "kinesitherapie": 15,
+          "odontologie": 29,
+          "maieutique": 14
+        }
+      }
+    },
+    {
+      "nom": "Angers",
+      "pass": {
+        "candidats": 825,
+        "admis": 185,
+        "tauxReussite": 22.42,
+        "repartitionMMOPK": {
+          "medecine": 109,
+          "pharmacie": 39,
+          "kinesitherapie": 13,
+          "odontologie": 10,
+          "maieutique": 14
+        }
+      },
+      "las": {
+        "candidats": 427,
+        "admis": 66,
+        "tauxReussite": 15.46,
+        "repartitionMMOPK": {
+          "medecine": 109,
+          "pharmacie": 39,
+          "kinesitherapie": 13,
+          "odontologie": 10,
+          "maieutique": 14
+        }
+      }
+    },
+    {
+      "nom": "Orléans",
+      "pass": {
+        "candidats": 160,
+        "admis": 103,
+        "tauxReussite": 64.38,
+        "repartitionMMOPK": {
+          "medecine": 48,
+          "pharmacie": 0,
+          "kinesitherapie": 55,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      },
+      "las": {
+        "candidats": 450,
+        "admis": 70,
+        "tauxReussite": 15.56,
+        "repartitionMMOPK": {
+          "medecine": 48,
+          "pharmacie": 0,
+          "kinesitherapie": 55,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      }
+    },
+    {
+      "nom": "Besançon",
+      "pass": {
+        "candidats": 593,
+        "admis": 229,
+        "tauxReussite": 38.62,
+        "repartitionMMOPK": {
+          "medecine": 123,
+          "pharmacie": 35,
+          "kinesitherapie": 40,
+          "odontologie": 18,
+          "maieutique": 13
+        }
+      },
+      "las": {
+        "candidats": 258,
+        "admis": 68,
+        "tauxReussite": 26.36,
+        "repartitionMMOPK": {
+          "medecine": 123,
+          "pharmacie": 35,
+          "kinesitherapie": 40,
+          "odontologie": 18,
+          "maieutique": 13
+        }
+      }
+    },
+    {
+      "nom": "Bordeaux",
+      "pass": {
+        "candidats": 1400,
+        "admis": 366,
+        "tauxReussite": 26.14,
+        "repartitionMMOPK": {
+          "medecine": 195,
+          "pharmacie": 70,
+          "kinesitherapie": 54,
+          "odontologie": 35,
+          "maieutique": 12
+        }
+      },
+      "las": {
+        "candidats": 410,
+        "admis": 85,
+        "tauxReussite": 20.73,
+        "repartitionMMOPK": {
+          "medecine": 195,
+          "pharmacie": 70,
+          "kinesitherapie": 54,
+          "odontologie": 35,
+          "maieutique": 12
+        }
+      }
+    },
+    {
+      "nom": "Dijon",
+      "pass": {
+        "candidats": 800,
+        "admis": 264,
+        "tauxReussite": 33.0,
+        "repartitionMMOPK": {
+          "medecine": 133,
+          "pharmacie": 48,
+          "kinesitherapie": 44,
+          "odontologie": 25,
+          "maieutique": 14
+        }
+      },
+      "las": {
+        "candidats": 246,
+        "admis": 67,
+        "tauxReussite": 27.24,
+        "repartitionMMOPK": {
+          "medecine": 133,
+          "pharmacie": 48,
+          "kinesitherapie": 44,
+          "odontologie": 25,
+          "maieutique": 14
+        }
+      }
+    },
+    {
+      "nom": "Brest",
+      "pass": {
+        "candidats": 720,
+        "admis": 199,
+        "tauxReussite": 27.64,
+        "repartitionMMOPK": {
+          "medecine": 130,
+          "pharmacie": 15,
+          "kinesitherapie": 19,
+          "odontologie": 23,
+          "maieutique": 12
+        }
+      },
+      "las": {
+        "candidats": 473,
+        "admis": 25,
+        "tauxReussite": 5.29,
+        "repartitionMMOPK": {
+          "medecine": 130,
+          "pharmacie": 15,
+          "kinesitherapie": 19,
+          "odontologie": 23,
+          "maieutique": 12
+        }
+      }
+    },
+    {
+      "nom": "Corse",
+      "pass": {
+        "candidats": 160,
+        "admis": 33,
+        "tauxReussite": 20.63,
+        "repartitionMMOPK": {
+          "medecine": 21,
+          "pharmacie": 5,
+          "kinesitherapie": 3,
+          "odontologie": 2,
+          "maieutique": 2
+        }
+      },
+      "las": {
+        "candidats": 40,
+        "admis": 12,
+        "tauxReussite": 30.0,
+        "repartitionMMOPK": {
+          "medecine": 21,
+          "pharmacie": 5,
+          "kinesitherapie": 3,
+          "odontologie": 2,
+          "maieutique": 2
+        }
+      }
+    },
+    {
+      "nom": "Guyane",
+      "pass": {
+        "candidats": 140,
+        "admis": 32,
+        "tauxReussite": 22.86,
+        "repartitionMMOPK": {
+          "medecine": 25,
+          "pharmacie": 0,
+          "kinesitherapie": 1,
+          "odontologie": 0,
+          "maieutique": 6
+        }
+      },
+      "las": {
+        "candidats": 70,
+        "admis": 6,
+        "tauxReussite": 8.57,
+        "repartitionMMOPK": {
+          "medecine": 25,
+          "pharmacie": 0,
+          "kinesitherapie": 1,
+          "odontologie": 0,
+          "maieutique": 6
+        }
+      }
+    },
+    {
+      "nom": "La réunion",
+      "pass": {
+        "candidats": 790,
+        "admis": 116,
+        "tauxReussite": 14.68,
+        "repartitionMMOPK": {
+          "medecine": 87,
+          "pharmacie": 4,
+          "kinesitherapie": 9,
+          "odontologie": 6,
+          "maieutique": 10
+        }
+      },
+      "las": {
+        "candidats": 630,
+        "admis": 30,
+        "tauxReussite": 4.76,
+        "repartitionMMOPK": {
+          "medecine": 87,
+          "pharmacie": 4,
+          "kinesitherapie": 9,
+          "odontologie": 6,
+          "maieutique": 10
+        }
+      }
+    },
+    {
+      "nom": "Lille état",
+      "pass": {
+        "candidats": 1730,
+        "admis": 515,
+        "tauxReussite": 29.77,
+        "repartitionMMOPK": {
+          "medecine": 276,
+          "pharmacie": 108,
+          "kinesitherapie": 62,
+          "odontologie": 44,
+          "maieutique": 25
+        }
+      },
+      "las": {
+        "candidats": 1253,
+        "admis": 216,
+        "tauxReussite": 17.24,
+        "repartitionMMOPK": {
+          "medecine": 276,
+          "pharmacie": 108,
+          "kinesitherapie": 62,
+          "odontologie": 44,
+          "maieutique": 25
+        }
+      }
+    },
+    {
+      "nom": "Limoges",
+      "pass": {
+        "candidats": 660,
+        "admis": 180,
+        "tauxReussite": 27.27,
+        "repartitionMMOPK": {
+          "medecine": 92,
+          "pharmacie": 40,
+          "kinesitherapie": 32,
+          "odontologie": 6,
+          "maieutique": 10
+        }
+      },
+      "las": {
+        "candidats": 293,
+        "admis": 57,
+        "tauxReussite": 19.45,
+        "repartitionMMOPK": {
+          "medecine": 92,
+          "pharmacie": 40,
+          "kinesitherapie": 32,
+          "odontologie": 6,
+          "maieutique": 10
+        }
+      }
+    },
+    {
+      "nom": "Montpellier",
+      "pass": {
+        "candidats": 1600,
+        "admis": 409,
+        "tauxReussite": 25.56,
+        "repartitionMMOPK": {
+          "medecine": 196,
+          "pharmacie": 108,
+          "kinesitherapie": 43,
+          "odontologie": 27,
+          "maieutique": 35
+        }
+      },
+      "las": {
+        "candidats": 475,
+        "admis": 110,
+        "tauxReussite": 23.16,
+        "repartitionMMOPK": {
+          "medecine": 196,
+          "pharmacie": 108,
+          "kinesitherapie": 43,
+          "odontologie": 27,
+          "maieutique": 35
+        }
+      }
+    },
+    {
+      "nom": "Nancy",
+      "pass": {
+        "candidats": 750,
+        "admis": 351,
+        "tauxReussite": 46.8,
+        "repartitionMMOPK": {
+          "medecine": 175,
+          "pharmacie": 65,
+          "kinesitherapie": 40,
+          "odontologie": 47,
+          "maieutique": 24
+        }
+      },
+      "las": {
+        "candidats": 282,
+        "admis": 113,
+        "tauxReussite": 40.07,
+        "repartitionMMOPK": {
+          "medecine": 175,
+          "pharmacie": 65,
+          "kinesitherapie": 40,
+          "odontologie": 47,
+          "maieutique": 24
+        }
+      }
+    },
+    {
+      "nom": "Rouen (Le Havre)",
+      "pass": {
+        "candidats": 631,
+        "admis": 243,
+        "tauxReussite": 38.5,
+        "repartitionMMOPK": {
+          "medecine": 130,
+          "pharmacie": 38,
+          "kinesitherapie": 47,
+          "odontologie": 15,
+          "maieutique": 13
+        }
+      },
+      "las": {
+        "candidats": 264,
+        "admis": 82,
+        "tauxReussite": 31.06,
+        "repartitionMMOPK": {
+          "medecine": 130,
+          "pharmacie": 38,
+          "kinesitherapie": 47,
+          "odontologie": 15,
+          "maieutique": 13
+        }
+      }
+    },
+    {
+      "nom": "Antilles",
+      "pass": {
+        "candidats": 937,
+        "admis": 136,
+        "tauxReussite": 14.51,
+        "repartitionMMOPK": {
+          "medecine": 101,
+          "pharmacie": 4,
+          "kinesitherapie": 14,
+          "odontologie": 7,
+          "maieutique": 10
+        }
+      },
+      "las": {
+        "candidats": 570,
+        "admis": 117,
+        "tauxReussite": 20.53,
+        "repartitionMMOPK": {
+          "medecine": 101,
+          "pharmacie": 4,
+          "kinesitherapie": 14,
+          "odontologie": 7,
+          "maieutique": 10
+        }
+      }
+    },
+    {
+      "nom": "Tours",
+      "pass": {
+        "candidats": 815,
+        "admis": 264,
+        "tauxReussite": 32.39,
+        "repartitionMMOPK": {
+          "medecine": 157,
+          "pharmacie": 52,
+          "kinesitherapie": 20,
+          "odontologie": 17,
+          "maieutique": 18
+        }
+      },
+      "las": {
+        "candidats": 300,
+        "admis": 97,
+        "tauxReussite": 32.33,
+        "repartitionMMOPK": {
+          "medecine": 157,
+          "pharmacie": 52,
+          "kinesitherapie": 20,
+          "odontologie": 17,
+          "maieutique": 18
+        }
+      }
+    },
+    {
+      "nom": "Grenoble",
+      "pass": {
+        "candidats": 1300,
+        "admis": 214,
+        "tauxReussite": 16.46,
+        "repartitionMMOPK": {
+          "medecine": 112,
+          "pharmacie": 54,
+          "kinesitherapie": 20,
+          "odontologie": 10,
+          "maieutique": 18
+        }
+      },
+      "las": {
+        "candidats": 622,
+        "admis": 64,
+        "tauxReussite": 10.29,
+        "repartitionMMOPK": {
+          "medecine": 112,
+          "pharmacie": 54,
+          "kinesitherapie": 20,
+          "odontologie": 10,
+          "maieutique": 18
+        }
+      }
+    },
+    {
+      "nom": "Saint Etienne",
+      "pass": {
+        "candidats": 500,
+        "admis": 193,
+        "tauxReussite": 38.6,
+        "repartitionMMOPK": {
+          "medecine": 113,
+          "pharmacie": 30,
+          "kinesitherapie": 36,
+          "odontologie": 8,
+          "maieutique": 6
+        }
+      },
+      "las": {
+        "candidats": 429,
+        "admis": 71,
+        "tauxReussite": 16.55,
+        "repartitionMMOPK": {
+          "medecine": 113,
+          "pharmacie": 30,
+          "kinesitherapie": 36,
+          "odontologie": 8,
+          "maieutique": 6
+        }
+      }
+    },
+    {
+      "nom": "Paris Cité (Paris)",
+      "pass": {
+        "candidats": 1820,
+        "admis": 606,
+        "tauxReussite": 33.3,
+        "repartitionMMOPK": {
+          "medecine": 375,
+          "pharmacie": 125,
+          "kinesitherapie": 44,
+          "odontologie": 37,
+          "maieutique": 25
+        }
+      },
+      "las": {
+        "candidats": 821,
+        "admis": 126,
+        "tauxReussite": 15.35,
+        "repartitionMMOPK": {
+          "medecine": 375,
+          "pharmacie": 125,
+          "kinesitherapie": 44,
+          "odontologie": 37,
+          "maieutique": 25
+        }
+      }
+    },
+    {
+      "nom": "Paris-Saclay (Paris)",
+      "pass": {
+        "candidats": 490,
+        "admis": 374,
+        "tauxReussite": 76.33,
+        "repartitionMMOPK": {
+          "medecine": 220,
+          "pharmacie": 79,
+          "kinesitherapie": 49,
+          "odontologie": 15,
+          "maieutique": 11
+        }
+      },
+      "las": {
+        "candidats": 295,
+        "admis": 37,
+        "tauxReussite": 12.54,
+        "repartitionMMOPK": {
+          "medecine": 220,
+          "pharmacie": 79,
+          "kinesitherapie": 49,
+          "odontologie": 15,
+          "maieutique": 11
+        }
+      }
+    },
+    {
+      "nom": "Amiens",
+      "pass": {
+        "candidats": 862,
+        "admis": 246,
+        "tauxReussite": 28.54,
+        "repartitionMMOPK": {
+          "medecine": 122,
+          "pharmacie": 45,
+          "kinesitherapie": 32,
+          "odontologie": 25,
+          "maieutique": 22
+        }
+      },
+      "las": {
+        "candidats": 507,
+        "admis": 59,
+        "tauxReussite": 11.64,
+        "repartitionMMOPK": {
+          "medecine": 122,
+          "pharmacie": 45,
+          "kinesitherapie": 32,
+          "odontologie": 25,
+          "maieutique": 22
+        }
+      }
+    },
+    {
+      "nom": "Rennes",
+      "pass": {
+        "candidats": 696,
+        "admis": 214,
+        "tauxReussite": 30.75,
+        "repartitionMMOPK": {
+          "medecine": 105,
+          "pharmacie": 44,
+          "kinesitherapie": 20,
+          "odontologie": 34,
+          "maieutique": 11
+        }
+      },
+      "las": {
+        "candidats": 298,
+        "admis": 112,
+        "tauxReussite": 37.58,
+        "repartitionMMOPK": {
+          "medecine": 105,
+          "pharmacie": 44,
+          "kinesitherapie": 20,
+          "odontologie": 34,
+          "maieutique": 11
+        }
+      }
+    },
+    {
+      "nom": "Toulouse",
+      "pass": {
+        "candidats": 1083,
+        "admis": 328,
+        "tauxReussite": 30.29,
+        "repartitionMMOPK": {
+          "medecine": 196,
+          "pharmacie": 50,
+          "kinesitherapie": 23,
+          "odontologie": 48,
+          "maieutique": 11
+        }
+      },
+      "las": {
+        "candidats": 694,
+        "admis": 123,
+        "tauxReussite": 17.72,
+        "repartitionMMOPK": {
+          "medecine": 196,
+          "pharmacie": 50,
+          "kinesitherapie": 23,
+          "odontologie": 48,
+          "maieutique": 11
+        }
+      }
+    },
+    {
+      "nom": "Versailles - Saint-Quentin-en-Yvelines UVSQ (Paris)",
+      "pass": {
+        "candidats": 556,
+        "admis": 241,
+        "tauxReussite": 43.35,
+        "repartitionMMOPK": {
+          "medecine": 138,
+          "pharmacie": 25,
+          "kinesitherapie": 63,
+          "odontologie": 6,
+          "maieutique": 9
+        }
+      },
+      "las": {
+        "candidats": 222,
+        "admis": 184,
+        "tauxReussite": 82.88,
+        "repartitionMMOPK": {
+          "medecine": 138,
+          "pharmacie": 25,
+          "kinesitherapie": 63,
+          "odontologie": 6,
+          "maieutique": 9
+        }
+      }
+    },
+    {
+      "nom": "Poitiers",
+      "pass": {
+        "candidats": 0,
+        "admis": 0,
+        "tauxReussite": 0,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      },
+      "las": {
+        "candidats": 810,
+        "admis": 236,
+        "tauxReussite": 29.14,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      }
+    },
+    {
+      "nom": "Nice",
+      "pass": {
+        "candidats": 0,
+        "admis": 0,
+        "tauxReussite": 0,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      },
+      "las": {
+        "candidats": 976,
+        "admis": 226,
+        "tauxReussite": 23.16,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      }
+    },
+    {
+      "nom": "Reims",
+      "pass": {
+        "candidats": 0,
+        "admis": 0,
+        "tauxReussite": 0,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      },
+      "las": {
+        "candidats": 907,
+        "admis": 302,
+        "tauxReussite": 33.3,
+        "repartitionMMOPK": {
+          "medecine": 0,
+          "pharmacie": 0,
+          "kinesitherapie": 0,
+          "odontologie": 0,
+          "maieutique": 0
+        }
+      }
+    }
+  ]

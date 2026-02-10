@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useFormStore } from '../../store/useFormStore';
+import { usePrepaPartenaire } from '../../hooks/usePrepaPartenaire';
+import { PrepaRdvPopup } from '../popup/PrepaRdvPopup';
 
 // Fallback letter content (1500 characters)
 const FALLBACK_LETTER = `Madame, Monsieur,
@@ -28,6 +30,8 @@ export function LetterPreview({ onCopy, onDownload, onDiscover, isBlurred }: Let
   const [isVisible, setIsVisible] = useState(false);
   const [hippoExiting, setHippoExiting] = useState(false);
   const [letterRevealed, setLetterRevealed] = useState(false);
+  const [showPrepaPopup, setShowPrepaPopup] = useState(false);
+  const { prepaPartenaire, hasPrepaPartenaire } = usePrepaPartenaire();
 
   // Use real letter from store, or fallback if not ready
   const displayLetter = letter || FALLBACK_LETTER;
@@ -53,76 +57,102 @@ export function LetterPreview({ onCopy, onDownload, onDiscover, isBlurred }: Let
   }, []);
 
   return (
-    <div className="w-full max-w-[750px] h-[530px] flex flex-col relative">
-      {/* Hippo exiting animation */}
-      <div
-        className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in ${
-          hippoExiting ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
-        }`}
-        style={{ zIndex: hippoExiting ? 0 : 10 }}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154" fill="none" className="w-80 h-80">
-          <path d="M46.6434 19.8149C46.6009 19.8274 46.565 19.8561 46.5435 19.8948C46.522 19.9336 46.5166 19.9792 46.5285 20.0219C46.5285 20.1752 46.5975 20.1292 47.5403 20.1829C48.3528 20.2289 49.0733 20.2672 49.426 20.2672H49.6406C49.6718 20.2588 49.7003 20.2424 49.7232 20.2195C49.7461 20.1966 49.7625 20.1681 49.7709 20.1369C49.7792 20.106 49.7793 20.0735 49.7713 20.0426C49.7632 20.0117 49.7472 19.9834 49.7249 19.9606C49.4873 19.7229 46.6664 19.8073 46.6434 19.8149Z" fill="none" stroke="black" strokeWidth="1"/>
-        </svg>
-      </div>
+    <>
+      <div className="w-full max-w-[750px] min-h-[400px] md:h-[530px] flex flex-col relative">
+        {/* Hippo exiting animation */}
+        <div
+          className={`absolute inset-0 flex items-center justify-center transition-all duration-300 ease-in ${
+            hippoExiting ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'
+          }`}
+          style={{ zIndex: hippoExiting ? 0 : 10 }}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="154" height="154" viewBox="0 0 154 154" fill="none" className="w-80 h-80">
+            <path d="M46.6434 19.8149C46.6009 19.8274 46.565 19.8561 46.5435 19.8948C46.522 19.9336 46.5166 19.9792 46.5285 20.0219C46.5285 20.1752 46.5975 20.1292 47.5403 20.1829C48.3528 20.2289 49.0733 20.2672 49.426 20.2672H49.6406C49.6718 20.2588 49.7003 20.2424 49.7232 20.2195C49.7461 20.1966 49.7625 20.1681 49.7709 20.1369C49.7792 20.106 49.7793 20.0735 49.7713 20.0426C49.7632 20.0117 49.7472 19.9834 49.7249 19.9606C49.4873 19.7229 46.6664 19.8073 46.6434 19.8149Z" fill="none" stroke="black" strokeWidth="1"/>
+          </svg>
+        </div>
 
-      {/* Letter container */}
-      <div
-        className={`flex-1 flex flex-col transition-opacity duration-500 ${
-          isVisible ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        {/* Letter box */}
-        <div className="bg-white border-2 border-border rounded-xl p-6 flex-1 overflow-hidden flex flex-col relative" style={{ maxHeight: '420px' }}>
-          <div className="flex-1 overflow-y-auto">
-            <div
-              className="whitespace-pre-wrap text-sm text-text-primary leading-relaxed transition-all duration-500"
-              style={{
-                filter: isBlurred ? 'blur(4px)' : 'blur(0)',
-                animation: letterRevealed ? 'revealFromTop 0.8s ease-out forwards' : 'none',
-              }}
-            >
-              {displayLetter}
+        {/* Letter container */}
+        <div
+          className={`flex-1 flex flex-col transition-opacity duration-500 ${
+            isVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {/* Letter box */}
+          <div className="bg-white border-2 border-border rounded-xl p-4 md:p-6 flex-1 overflow-hidden flex flex-col relative" style={{ maxHeight: '420px' }}>
+            <div className="flex-1 overflow-y-auto">
+              <div
+                className="whitespace-pre-wrap text-xs md:text-sm text-text-primary leading-relaxed transition-all duration-500"
+                style={{
+                  filter: isBlurred ? 'blur(4px)' : 'blur(0)',
+                  animation: letterRevealed ? 'revealFromTop 0.8s ease-out forwards' : 'none',
+                }}
+              >
+                {displayLetter}
+              </div>
             </div>
+
+            {/* Discover button overlay - shown when blurred */}
+            {isBlurred && (
+              <div className="absolute inset-0 flex items-center justify-center p-4">
+                <button
+                  onClick={onDiscover}
+                  className="px-4 md:px-8 py-3 md:py-4 bg-violet text-white font-semibold rounded-xl hover:bg-violet-dark transition-colors shadow-lg text-sm md:text-lg text-center"
+                >
+                  Découvrir la lettre que Hippo t'a rédigée
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Discover button overlay - shown when blurred */}
-          {isBlurred && (
-            <div className="absolute inset-0 flex items-center justify-center">
+          {/* Buttons - only shown when not blurred */}
+          {!isBlurred && (
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 mt-4 justify-center">
+              {/* Bouton Faire relire - en premier sur mobile */}
+              {hasPrepaPartenaire && (
+                <button
+                  onClick={() => setShowPrepaPopup(true)}
+                  className="btn-shiny w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 text-white font-semibold rounded-lg transition-all duration-200 text-sm md:text-base order-first md:order-last"
+                >
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  Faire relire ma lettre
+                </button>
+              )}
               <button
-                onClick={onDiscover}
-                className="px-8 py-4 bg-violet text-white font-semibold rounded-xl hover:bg-violet-dark transition-colors shadow-lg text-lg"
+                onClick={onCopy}
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-violet text-white font-semibold rounded-lg hover:bg-violet-dark transition-colors text-sm md:text-base"
               >
-                Découvrir la lettre que Hippo t'a rédigée
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copier la lettre
+              </button>
+              <button
+                onClick={onDownload}
+                className="w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-violet text-white font-semibold rounded-lg hover:bg-violet-dark transition-colors text-sm md:text-base"
+              >
+                <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Télécharger la lettre
               </button>
             </div>
           )}
         </div>
-
-        {/* Buttons - only shown when not blurred */}
-        {!isBlurred && (
-          <div className="flex gap-4 mt-4 justify-center">
-            <button
-              onClick={onCopy}
-              className="flex items-center gap-2 px-6 py-3 bg-violet text-white font-semibold rounded-lg hover:bg-violet-dark transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-              Copier la lettre
-            </button>
-            <button
-              onClick={onDownload}
-              className="flex items-center gap-2 px-6 py-3 bg-violet text-white font-semibold rounded-lg hover:bg-violet-dark transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              Télécharger la lettre
-            </button>
-          </div>
-        )}
       </div>
-    </div>
+
+      {/* Popup RDV Prépa */}
+      {prepaPartenaire && (
+        <PrepaRdvPopup
+          isOpen={showPrepaPopup}
+          onClose={() => setShowPrepaPopup(false)}
+          prepaNom={prepaPartenaire.nom}
+          prepaVille={prepaPartenaire.ville}
+          prepaLien={prepaPartenaire.lien}
+        />
+      )}
+    </>
   );
 }

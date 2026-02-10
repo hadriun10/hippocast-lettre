@@ -86,16 +86,16 @@ export function HippoWithSpeechBubble() {
 
   return (
     <div className="w-full max-w-[750px] h-[530px] flex flex-col items-center relative">
-      {/* Speech bubble - positioned at top left with fixed size */}
-      <div className="absolute top-6 left-4 z-10">
-        <div className="relative bg-white border-2 border-border rounded-3xl px-5 py-4 shadow-sm w-[440px] h-[80px]">
-          <p className="text-text-primary text-xl leading-tight" style={{ fontFamily: "'VT323', monospace" }} key={messageKey}>
+      {/* Speech bubble - responsive: centered on mobile, left on desktop */}
+      <div className="absolute top-6 left-0 right-0 md:left-4 md:right-auto z-10 px-4 md:px-0">
+        <div className="relative bg-white border-2 border-border rounded-3xl px-4 md:px-5 py-3 md:py-4 shadow-sm w-full md:w-[440px] min-h-[60px] md:h-[80px] mx-auto md:mx-0">
+          <p className="text-text-primary text-lg md:text-xl leading-tight text-center md:text-left" style={{ fontFamily: "'VT323', monospace" }} key={messageKey}>
             {displayedText}
             {isTyping && <span className="animate-pulse ml-0.5">|</span>}
           </p>
-          {/* Triangle pointing down */}
+          {/* Triangle pointing down - centered on mobile, right on desktop */}
           <svg
-            className="absolute -bottom-[16px] right-12"
+            className="absolute -bottom-[16px] left-1/2 -translate-x-1/2 md:left-auto md:translate-x-0 md:right-12"
             width="24"
             height="18"
             viewBox="0 0 24 18"

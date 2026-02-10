@@ -7,11 +7,16 @@ export type GenerationPhase = 'idle' | 'loading' | 'letter' | 'popup' | 'waiting
 const initialBlockStatuses: BlockStatus[] = ['active', 'pending', 'pending', 'pending'];
 
 interface ExtendedFormState extends FormState {
+  userId: string;
   generationPhase: GenerationPhase;
   setGenerationPhase: (phase: GenerationPhase) => void;
+  setUserId: (userId: string) => void;
 }
 
 export const useFormStore = create<ExtendedFormState>((set, get) => ({
+  // User identification (généré au moment de l'envoi de la lettre)
+  userId: '',
+
   // Navigation
   currentBlock: 0,
   visibleQuestionIndex: 0,
@@ -100,6 +105,8 @@ export const useFormStore = create<ExtendedFormState>((set, get) => ({
 
   setGenerationPhase: (phase: GenerationPhase) => set({ generationPhase: phase }),
 
+  setUserId: (userId: string) => set({ userId }),
+
   showEncouragement: () => {
     // Only show encouragement randomly (40% chance)
     if (Math.random() > 0.6) {
@@ -112,6 +119,7 @@ export const useFormStore = create<ExtendedFormState>((set, get) => ({
 
   resetForm: () =>
     set({
+      userId: '', // Reset - sera régénéré au prochain envoi
       currentBlock: 0,
       visibleQuestionIndex: 0,
       parcours: null,
