@@ -103,8 +103,10 @@ export interface PopupFormData {
   email: string;
   telephone: string;
   prenom: string;
-  userType?: 'parent' | 'eleve';
+  isParent?: 'oui' | 'non';
   consent?: 'oui' | 'non';
+  wantsPrepa?: boolean;
+  selectedPrepas?: string;
 }
 
 // Structure commune pour les deux parcours

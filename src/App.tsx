@@ -1,14 +1,15 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Tabs, QuestionBlock } from './components/form';
 import { LetterDisplay, RecapSummary } from './components/letter';
 import { GenerationLoading, LetterPreview, WaitingScreen } from './components/generation';
 import { HippoWithSpeechBubble } from './components/ui';
-import { CapturePopup } from './components/popup';
+import { CapturePopup, PrepaRdvPopup } from './components/popup';
 import { useFormStore } from './store/useFormStore';
 import { blocks } from './config/questions.config';
 import { submitForm, submitPopup, buildFormPayload } from './lib/api';
 import { track } from './lib/posthog';
 import { useResponsive } from './hooks/useResponsive';
+import { usePrepaPartenaire } from './hooks/usePrepaPartenaire';
 import type { PopupFormData } from './types';
 
 function App() {
@@ -29,6 +30,8 @@ function App() {
   } = useFormStore();
 
   const { isMobile } = useResponsive();
+  const { prepaPartenaire } = usePrepaPartenaire();
+  const [showPrepaRdvPopup, setShowPrepaRdvPopup] = useState(false);
   const hasTrackedStart = useRef(false);
   const letterPromiseRef = useRef<Promise<void> | null>(null);
 
@@ -84,10 +87,15 @@ function App() {
     const payload = buildFormPayload();
     submitPopup(data, payload); // Pas de await, on n'attend pas la réponse
 
-    track.leadCaptured(data.consent || 'oui', data.userType);
+    track.leadCaptured(data.consent || 'oui', data.isParent === 'oui' ? 'parent' : 'eleve');
 
     // Fermer la popup immédiatement
     setShowPopup(false);
+
+    // Si la personne veut une prépa et qu'il y a une prépa partenaire, afficher la popup RDV
+    if (data.wantsPrepa && prepaPartenaire) {
+      setTimeout(() => setShowPrepaRdvPopup(true), 500);
+    }
 
     // Vérifier si la lettre est déjà arrivée
     const currentLetter = useFormStore.getState().letter;
@@ -283,6 +291,17 @@ function App() {
         onSubmit={handlePopupSubmit}
         isLoading={false}
       />
+
+      {/* Popup RDV Prépa - affichée si la personne veut une prépa */}
+      {prepaPartenaire && (
+        <PrepaRdvPopup
+          isOpen={showPrepaRdvPopup}
+          onClose={() => setShowPrepaRdvPopup(false)}
+          prepaNom={prepaPartenaire.nom}
+          prepaVille={prepaPartenaire.ville}
+          prepaLien={prepaPartenaire.lien}
+        />
+      )}
     </div>
   );
 }

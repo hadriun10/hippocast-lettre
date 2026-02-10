@@ -26,9 +26,9 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
       <div className="bg-white border-2 border-black rounded-lg w-full max-w-md shadow-2xl animate-fade-in overflow-hidden">
         <div className="p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-2">
             <div className="w-6"></div>
-            <h2 className="text-xl font-bold text-text-primary text-center flex-1">Fais relire ta lettre par un expert</h2>
+            <h2 className="text-2xl font-bold text-text-primary text-center flex-1">Bon plan !</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -38,6 +38,7 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
               </svg>
             </button>
           </div>
+          <p className="text-center text-text-primary font-medium mb-4">Fais relire ta lettre par un expert</p>
 
           {/* Content */}
           <div className="space-y-4">

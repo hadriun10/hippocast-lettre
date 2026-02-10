@@ -4,10 +4,18 @@ import type { PopupFormData } from '../../types';
 import { EMAIL_REGEX } from '../../config/constants';
 import { ConsentReminderModal1 } from './ConsentReminderModal1';
 import { ConsentReminderModal2 } from './ConsentReminderModal2';
+import { usePrepaPartenaire } from '../../hooks/usePrepaPartenaire';
+
+interface Prepa {
+  nom: string;
+  ville: string;
+  universites: string[];
+  lien: string;
+}
 
 interface CapturePopupProps {
   isOpen: boolean;
-  onSubmit: (data: PopupFormData & { consent: 'oui' | 'non' }) => void;
+  onSubmit: (data: PopupFormData & { consent: 'oui' | 'non'; wantsPrepa?: boolean; selectedPrepas?: string }) => void;
   isLoading: boolean;
 }
 
@@ -38,8 +46,18 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  // Prepa state
+  const [wantsPrepa, setWantsPrepa] = useState<boolean | null>(null);
+  const [selectedPrepas, setSelectedPrepas] = useState<string[]>([]);
+  const [allPrepas, setAllPrepas] = useState<Prepa[]>([]);
+
+  // Get user's university to find prepas in their city
+  const { prepaPartenaire } = usePrepaPartenaire();
+
   // Visible fields tracking (progressive reveal)
   const [showPrenom, setShowPrenom] = useState(false);
+  const [showWantsPrepa, setShowWantsPrepa] = useState(false);
+  const [showPrepaList, setShowPrepaList] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [showTelephone, setShowTelephone] = useState(false);
   const [showCheckboxes, setShowCheckboxes] = useState(false);
@@ -57,6 +75,19 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
   const [showConsentModal1, setShowConsentModal1] = useState(false);
   const [showConsentModal2, setShowConsentModal2] = useState(false);
 
+  // Fetch all prepas
+  useEffect(() => {
+    fetch('/prepa.json')
+      .then((res) => res.json())
+      .then((data: Prepa[]) => setAllPrepas(data))
+      .catch((err) => console.error('Failed to load prepas:', err));
+  }, []);
+
+  // Get prepas in user's city (based on partner prepa's city)
+  const prepasInCity = prepaPartenaire
+    ? allPrepas.filter((p) => p.ville === prepaPartenaire.ville)
+    : [];
+
   // Progressive field reveal - prenom after userType selection
   useEffect(() => {
     if (userType && !showPrenom) {
@@ -64,12 +95,29 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
     }
   }, [userType, showPrenom]);
 
-  // Email after prenom
+  // Show wantsPrepa question after prenom
   useEffect(() => {
-    if (prenom.length >= 2 && !showEmail) {
-      setTimeout(() => setShowEmail(true), 300);
+    if (prenom.length >= 2 && !showWantsPrepa) {
+      setTimeout(() => setShowWantsPrepa(true), 300);
     }
-  }, [prenom, showEmail]);
+  }, [prenom, showWantsPrepa]);
+
+  // Show prepa list if wantsPrepa is true
+  useEffect(() => {
+    if (wantsPrepa === true && !showPrepaList) {
+      setTimeout(() => setShowPrepaList(true), 300);
+    }
+  }, [wantsPrepa, showPrepaList]);
+
+  // Show email after prepa question is answered
+  useEffect(() => {
+    if (wantsPrepa !== null && !showEmail) {
+      // If wantsPrepa is true, wait for at least one prepa to be selected
+      if (wantsPrepa === false || selectedPrepas.length > 0) {
+        setTimeout(() => setShowEmail(true), 300);
+      }
+    }
+  }, [wantsPrepa, selectedPrepas, showEmail]);
 
   useEffect(() => {
     if (email && EMAIL_REGEX.test(email) && !showTelephone) {
@@ -105,6 +153,12 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
     if (formatted.replace(/\s/g, '').length <= 10) {
       setTelephone(formatted);
     }
+  };
+
+  const handlePrepaToggle = (prepaName: string) => {
+    setSelectedPrepas((prev) =>
+      prev.includes(prepaName) ? prev.filter((p) => p !== prepaName) : [...prev, prepaName]
+    );
   };
 
   const validateForm = (): boolean => {
@@ -153,12 +207,17 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
   };
 
   const submitWithConsent = (consent: 'oui' | 'non') => {
+    // Format phone: remove + and spaces → "33612345678"
+    const formattedPhone = (countryCode + telephone).replace(/[+\s]/g, '');
+
     onSubmit({
       email,
-      telephone: countryCode + ' ' + telephone,
+      telephone: formattedPhone,
       prenom,
-      userType: userType || 'eleve',
+      isParent: userType === 'parent' ? 'oui' : 'non',
       consent,
+      wantsPrepa: wantsPrepa || false,
+      selectedPrepas: selectedPrepas.join(' / '),
     });
   };
 
@@ -184,12 +243,14 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
     submitWithConsent('non');
   };
 
-  const selectedCountry = COUNTRY_CODES.find(c => c.code === countryCode) || COUNTRY_CODES[0];
+  const selectedCountry = COUNTRY_CODES.find((c) => c.code === countryCode) || COUNTRY_CODES[0];
 
   const phoneDigits = telephone.replace(/\s/g, '');
   const isFormValid =
     userType &&
     prenom.length >= 2 &&
+    wantsPrepa !== null &&
+    (wantsPrepa === false || selectedPrepas.length > 0) &&
     email &&
     EMAIL_REGEX.test(email) &&
     phoneDigits.length >= 9 &&
@@ -219,7 +280,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                 />
                 <div>
                   <p className="text-sm text-gray-600">
-                    Chaque année, des milliers d'étudiants galèrent avec leur lettre. J'ai créé Hippo pour que la tienne te ressemble, te mette en valeur et plaise aux jurys !
+                    Chaque année, des milliers d'étudiants galèrent avec leur lettre. J'ai créé Hippo pour que
+                    la tienne te ressemble, te mette en valeur et plaise aux jurys !
                   </p>
                   <p className="text-xs text-gray-500 mt-0.5">Dr. Constantin Hays.</p>
                 </div>
@@ -228,9 +290,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
               <div className="space-y-4">
                 {/* Parent ou Élève - shown directly */}
                 <div className="animate-fade-in">
-                  <label className="block text-sm font-medium text-text-primary mb-2">
-                    Tu es :
-                  </label>
+                  <label className="block text-sm font-medium text-text-primary mb-2">Tu es :</label>
                   <div className="flex gap-3">
                     <button
                       type="button"
@@ -274,6 +334,85 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                   </div>
                 )}
 
+                {/* Wants Prepa question */}
+                {showWantsPrepa && (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-text-primary mb-2">
+                      Comptes-tu prendre une prépa ?
+                    </label>
+                    <div className="flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setWantsPrepa(true)}
+                        className={`flex-1 px-4 py-3 rounded-lg border-2 font-medium transition-all ${
+                          wantsPrepa === true
+                            ? 'border-violet bg-violet text-white'
+                            : 'border-border bg-white text-text-primary hover:border-violet'
+                        }`}
+                      >
+                        Oui
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setWantsPrepa(false)}
+                        className={`flex-1 px-4 py-3 rounded-lg border-2 font-medium transition-all ${
+                          wantsPrepa === false
+                            ? 'border-violet bg-violet text-white'
+                            : 'border-border bg-white text-text-primary hover:border-violet'
+                        }`}
+                      >
+                        Non
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Prepa list - shown if wantsPrepa is true */}
+                {showPrepaList && wantsPrepa && (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-text-primary mb-2">Quelle prépa ?</label>
+                    <div className="space-y-2 max-h-48 overflow-y-auto border border-border rounded-lg p-3">
+                      {/* Partner prepas first (bold with recommendation) */}
+                      {prepasInCity.map((prepa) => (
+                        <label key={prepa.nom} className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={selectedPrepas.includes(prepa.nom)}
+                            onChange={() => handlePrepaToggle(prepa.nom)}
+                            className="w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                          />
+                          <span className="text-sm">
+                            <strong>{prepa.nom}</strong>{' '}
+                            <span className="text-violet text-xs">(recommandé par Hippocast)</span>
+                          </span>
+                        </label>
+                      ))}
+
+                      {/* Je ne sais pas encore */}
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedPrepas.includes('Je ne sais pas encore')}
+                          onChange={() => handlePrepaToggle('Je ne sais pas encore')}
+                          className="w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                        />
+                        <span className="text-sm text-text-primary">Je ne sais pas encore</span>
+                      </label>
+
+                      {/* Autre */}
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={selectedPrepas.includes('Autre')}
+                          onChange={() => handlePrepaToggle('Autre')}
+                          className="w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                        />
+                        <span className="text-sm text-text-primary">Autre</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
                 {/* Email */}
                 {showEmail && (
                   <div className="animate-fade-in">
@@ -307,8 +446,18 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                         >
                           <span className="text-base">{selectedCountry.flag}</span>
                           <span className="text-xs">{selectedCountry.code}</span>
-                          <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          <svg
+                            className="w-3 h-3 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
                           </svg>
                         </button>
                         {showCountryDropdown && (
@@ -366,8 +515,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                           Conditions Generales d'Utilisation
                         </a>
                         . Je comprends que le score affiche est une estimation statistique, fondee sur des
-                        donnees publiques et une etude interne Hippocast (473 etudiants), et qu'il ne
-                        garantit pas un resultat individuel.
+                        donnees publiques et une etude interne Hippocast (473 etudiants), et qu'il ne garantit
+                        pas un resultat individuel.
                       </span>
                     </label>
 
@@ -382,8 +531,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                         />
                         <span className="text-[10px] text-gray-600 leading-relaxed">
                           J'accepte de recevoir des informations personnalisees sur mon orientation et ma
-                          methode de travail, de la part d'un etudiant ayant reussi sa premiere annee de
-                          sante. A cette fin, j'accepte que Hippocast transmette mes coordonnees.
+                          methode de travail, de la part d'un etudiant ayant reussi sa premiere annee de sante.
+                          A cette fin, j'accepte que Hippocast transmette mes coordonnees.
                         </span>
                       </label>
                     )}
@@ -398,8 +547,8 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                           className="mt-1 w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
                         />
                         <span className="text-[10px] text-gray-600 leading-relaxed">
-                          J'accepte que Hippocast traite mes donnees personnelles afin de calculer et
-                          d'afficher mon estimation personnalisee, conformement a la{' '}
+                          J'accepte que Hippocast traite mes donnees personnelles afin de calculer et d'afficher
+                          mon estimation personnalisee, conformement a la{' '}
                           <a
                             href="https://www.hippocast.fr/regles-de-confidentialite-calculateur"
                             target="_blank"
