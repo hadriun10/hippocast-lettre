@@ -193,9 +193,12 @@ function App() {
     <div className="min-h-screen bg-bg-page flex flex-col">
       {/* Hero / Title Section */}
       <div className="text-center pt-8 pb-6 px-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">
-          Génère ta lettre de motivation PASS/LAS
+        <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
+          Génère gratuitement ta lettre de motivation PASS/LAS
         </h1>
+        <h2 className="text-lg md:text-xl text-text-secondary mb-3">
+          Hippo rédige ta lettre
+        </h2>
         <p className="text-text-primary mb-5 max-w-4xl mx-auto">
           En 4 mins, obtiens une <span className="font-bold">lettre personnalisée</span> basée sur{' '}
           <span className="font-bold">ton profil</span> et les{' '}
@@ -204,9 +207,9 @@ function App() {
         {/* Social proof */}
         <div className="inline-flex items-center gap-3">
           <div className="flex -space-x-2">
-            <img src="/user1.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-            <img src="/user2.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
-            <img src="/user3.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+            <img src="/user4.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+            <img src="/user5.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
+            <img src="/user6.png" alt="" className="w-8 h-8 rounded-full border-2 border-white object-cover" />
           </div>
           <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-full px-3 py-1">
             <span className="text-yellow-500">★★★★★</span>
