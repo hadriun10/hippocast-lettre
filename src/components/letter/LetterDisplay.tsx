@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '../ui';
 import { useFormStore } from '../../store/useFormStore';
 import { usePrepaPartenaire } from '../../hooks/usePrepaPartenaire';
+import { track } from '../../lib/posthog';
 
 interface LetterDisplayProps {
   onFaireRelireClick?: () => void;
@@ -25,6 +26,7 @@ export function LetterDisplay({ onFaireRelireClick }: LetterDisplayProps) {
   };
 
   const handleShare = async () => {
+    track.shareClicked();
     const { userEmail } = useFormStore.getState();
     const utmSource = userEmail ? `share_${userEmail}` : 'share';
     const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;

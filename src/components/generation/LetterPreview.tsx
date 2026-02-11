@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useFormStore } from '../../store/useFormStore';
 import { usePrepaPartenaire } from '../../hooks/usePrepaPartenaire';
 import { PrepaRdvPopup } from '../popup/PrepaRdvPopup';
+import { track } from '../../lib/posthog';
 
 // Fallback letter content (1500 characters)
 const FALLBACK_LETTER = `Madame, Monsieur,
@@ -36,6 +37,7 @@ export function LetterPreview({ onCopy, onDiscover, isBlurred }: LetterPreviewPr
   const displayLetter = letter || FALLBACK_LETTER;
 
   const handleShare = async () => {
+    track.shareClicked();
     const { userEmail } = useFormStore.getState();
     const utmSource = userEmail ? `share_${userEmail}` : 'share';
     const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;
@@ -133,7 +135,10 @@ export function LetterPreview({ onCopy, onDiscover, isBlurred }: LetterPreviewPr
               {/* Bouton Faire relire - en premier sur mobile */}
               {hasPrepaPartenaire && (
                 <button
-                  onClick={() => setShowPrepaPopup(true)}
+                  onClick={() => {
+                    track.faireRelireClicked();
+                    setShowPrepaPopup(true);
+                  }}
                   className="btn-shiny w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 text-white font-semibold rounded-lg transition-all duration-200 text-sm md:text-base order-first md:order-last"
                 >
                   <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

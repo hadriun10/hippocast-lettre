@@ -7,7 +7,7 @@ import { CapturePopup, PrepaRdvPopup } from './components/popup';
 import { useFormStore } from './store/useFormStore';
 import { blocks } from './config/questions.config';
 import { submitForm, submitPopup, buildFormPayload } from './lib/api';
-import { track } from './lib/posthog';
+import { track, identifyUser } from './lib/posthog';
 import { useResponsive } from './hooks/useResponsive';
 import { usePrepaPartenaire } from './hooks/usePrepaPartenaire';
 import type { PopupFormData } from './types';
@@ -88,6 +88,15 @@ function App() {
     // Stocker l'email pour le partage
     setUserEmail(data.email);
 
+    // Identifier l'utilisateur dans PostHog
+    identifyUser({
+      email: data.email,
+      prenom: data.prenom,
+      telephone: data.telephone,
+      isParent: data.isParent === 'oui',
+      consent: data.consent === 'oui',
+    });
+
     // Envoyer les données en arrière-plan (sans bloquer)
     const payload = buildFormPayload();
     submitPopup(data, payload); // Pas de await, on n'attend pas la réponse
@@ -136,10 +145,12 @@ function App() {
 
   const handleFaireRelireClick = () => {
     hasClickedFaireRelire.current = true;
+    track.faireRelireClicked();
     setShowPrepaRdvPopup(true);
   };
 
   const handleShareApp = async () => {
+    track.shareClicked();
     const { userEmail } = useFormStore.getState();
     const utmSource = userEmail ? `share_${userEmail}` : 'share';
     const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;

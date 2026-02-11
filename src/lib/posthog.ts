@@ -12,6 +12,27 @@ export function initPostHog() {
   }
 }
 
+// Identify user with their properties
+interface UserProperties {
+  email: string;
+  prenom?: string;
+  telephone?: string;
+  isParent: boolean;
+  consent: boolean;
+}
+
+export function identifyUser(properties: UserProperties) {
+  if (POSTHOG_KEY) {
+    posthog.identify(properties.email, {
+      email: properties.email,
+      prenom: properties.prenom,
+      telephone: properties.telephone,
+      is_parent: properties.isParent,
+      consent: properties.consent,
+    });
+  }
+}
+
 // Tracking functions
 export const track = {
   formStarted: () => {
@@ -47,6 +68,24 @@ export const track = {
   letterRevealed: () => {
     if (POSTHOG_KEY) {
       posthog.capture('letter_revealed');
+    }
+  },
+
+  shareClicked: () => {
+    if (POSTHOG_KEY) {
+      posthog.capture('share_clicked');
+    }
+  },
+
+  faireRelireClicked: () => {
+    if (POSTHOG_KEY) {
+      posthog.capture('faire_relire_clicked');
+    }
+  },
+
+  rdvClicked: (prepaNom: string) => {
+    if (POSTHOG_KEY) {
+      posthog.capture('rdv_clicked', { prepa_nom: prepaNom });
     }
   },
 };

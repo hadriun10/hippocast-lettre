@@ -1,5 +1,6 @@
 import { notifyRdvClick } from '../../lib/api';
 import { useFormStore } from '../../store/useFormStore';
+import { track } from '../../lib/posthog';
 
 interface PrepaRdvPopupProps {
   isOpen: boolean;
@@ -15,6 +16,8 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
   if (!isOpen) return null;
 
   const handleRdv = () => {
+    // Tracker le clic
+    track.rdvClicked(prepaNom);
     // Notifier n8n du clic
     notifyRdvClick(prepaNom, prepaVille);
     window.open(prepaLien, '_blank');
