@@ -27,6 +27,7 @@ function App() {
     setLetter,
     revealLetter,
     setGenerationPhase,
+    setUserEmail,
   } = useFormStore();
 
   const { isMobile } = useResponsive();
@@ -34,6 +35,7 @@ function App() {
   const [showPrepaRdvPopup, setShowPrepaRdvPopup] = useState(false);
   const hasTrackedStart = useRef(false);
   const letterPromiseRef = useRef<Promise<void> | null>(null);
+  const hasClickedFaireRelire = useRef(false);
 
   // Track form start on first interaction
   useEffect(() => {
@@ -83,6 +85,9 @@ function App() {
   };
 
   const handlePopupSubmit = async (data: PopupFormData) => {
+    // Stocker l'email pour le partage
+    setUserEmail(data.email);
+
     // Envoyer les données en arrière-plan (sans bloquer)
     const payload = buildFormPayload();
     submitPopup(data, payload); // Pas de await, on n'attend pas la réponse
@@ -92,9 +97,14 @@ function App() {
     // Fermer la popup immédiatement
     setShowPopup(false);
 
-    // Si il y a une prépa partenaire, afficher la popup RDV
+    // Si il y a une prépa partenaire, afficher la popup RDV après 5 secondes
+    // (sauf si l'utilisateur a déjà cliqué sur "Faire relire")
     if (prepaPartenaire) {
-      setTimeout(() => setShowPrepaRdvPopup(true), 500);
+      setTimeout(() => {
+        if (!hasClickedFaireRelire.current) {
+          setShowPrepaRdvPopup(true);
+        }
+      }, 5000);
     }
 
     // Vérifier si la lettre est déjà arrivée
@@ -124,24 +134,40 @@ function App() {
     }
   };
 
+  const handleFaireRelireClick = () => {
+    hasClickedFaireRelire.current = true;
+    setShowPrepaRdvPopup(true);
+  };
+
+  const handleShareApp = async () => {
+    const { userEmail } = useFormStore.getState();
+    const utmSource = userEmail ? `share_${userEmail}` : 'share';
+    const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;
+    const shareText = `Hello, t'as déjà tes lettres de motivation parcoursup pour PASS/LAS ? Je te conseille cette appli pour créer ta lettre. C'est gratuit et le résultat est incroyable !\n\n${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: shareText,
+        });
+      } catch (err) {
+        // L'utilisateur a annulé
+      }
+    } else {
+      // Fallback : copier le message
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert('Message copié ! Tu peux le coller dans ton app de messagerie.');
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
+  };
+
   const handleCopyLetter = () => {
     if (letter) {
       navigator.clipboard.writeText(letter);
     }
-  };
-
-  const handleDownloadLetter = () => {
-    if (!letter) return;
-
-    const blob = new Blob([letter], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lettre-motivation-pass-las.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   // Current block data
@@ -158,7 +184,7 @@ function App() {
   if (isMobile && isComplete) {
     return (
       <div className="min-h-screen bg-bg-page flex flex-col p-4">
-        <LetterDisplay />
+        <LetterDisplay onFaireRelireClick={handleFaireRelireClick} />
       </div>
     );
   }
@@ -234,7 +260,7 @@ function App() {
             ) : generationPhase === 'waiting' ? (
               <WaitingScreen />
             ) : (
-              <LetterPreview onCopy={handleCopyLetter} onDownload={handleDownloadLetter} onDiscover={handleDiscoverLetter} isBlurred={isLetterBlurred} />
+              <LetterPreview onCopy={handleCopyLetter} onDiscover={handleDiscoverLetter} isBlurred={isLetterBlurred} />
             )}
           </div>
         ) : (
@@ -273,15 +299,26 @@ function App() {
               </a>
             </div>
           </div>
-          <a
-            href="mailto:contact@hippocast.fr"
-            className="flex items-center justify-center md:justify-start gap-2 text-sm hover:text-text-secondary"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Nous contacter
-          </a>
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            <a
+              href="mailto:contact@hippocast.fr"
+              className="flex items-center justify-center md:justify-start gap-2 text-sm hover:text-text-secondary"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Nous contacter
+            </a>
+            <button
+              onClick={handleShareApp}
+              className="flex items-center justify-center gap-2 text-sm px-4 py-2 bg-violet text-white rounded-lg font-medium hover:bg-violet-dark transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              Partager
+            </button>
+          </div>
         </div>
       </footer>
 

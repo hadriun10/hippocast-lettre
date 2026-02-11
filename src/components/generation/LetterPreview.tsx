@@ -20,12 +20,11 @@ Je reste à votre disposition pour tout entretien complémentaire et vous prie d
 
 interface LetterPreviewProps {
   onCopy: () => void;
-  onDownload: () => void;
   onDiscover: () => void;
   isBlurred: boolean;
 }
 
-export function LetterPreview({ onCopy, onDownload, onDiscover, isBlurred }: LetterPreviewProps) {
+export function LetterPreview({ onCopy, onDiscover, isBlurred }: LetterPreviewProps) {
   const { letter } = useFormStore();
   const [isVisible, setIsVisible] = useState(false);
   const [hippoExiting, setHippoExiting] = useState(false);
@@ -35,6 +34,30 @@ export function LetterPreview({ onCopy, onDownload, onDiscover, isBlurred }: Let
 
   // Use real letter from store, or fallback if not ready
   const displayLetter = letter || FALLBACK_LETTER;
+
+  const handleShare = async () => {
+    const { userEmail } = useFormStore.getState();
+    const utmSource = userEmail ? `share_${userEmail}` : 'share';
+    const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;
+    const shareText = `Hello, t'as déjà tes lettres de motivation parcoursup pour PASS/LAS ? Je te conseille cette appli pour créer ta lettre. C'est gratuit et le résultat est incroyable !\n\n${shareUrl}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: shareText,
+        });
+      } catch (err) {
+        // L'utilisateur a annulé
+      }
+    } else {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert('Message copié ! Tu peux le coller dans ton app de messagerie.');
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
+  };
 
   useEffect(() => {
     // Start hippo exit animation
@@ -130,13 +153,13 @@ export function LetterPreview({ onCopy, onDownload, onDiscover, isBlurred }: Let
                 Copier la lettre
               </button>
               <button
-                onClick={onDownload}
+                onClick={handleShare}
                 className="w-full md:w-auto flex items-center justify-center gap-2 px-4 md:px-6 py-2.5 md:py-3 bg-violet text-white font-semibold rounded-lg hover:bg-violet-dark transition-colors text-sm md:text-base"
               >
                 <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
-                Télécharger la lettre
+                Partage l'outil !
               </button>
             </div>
           )}

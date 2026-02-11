@@ -26,9 +26,9 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
       <div className="bg-white border-2 border-black rounded-lg w-full max-w-md shadow-2xl animate-fade-in overflow-hidden">
         <div className="p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-4">
             <div className="w-6"></div>
-            <h2 className="text-2xl font-bold text-text-primary text-center flex-1">Bon plan !</h2>
+            <h2 className="text-2xl font-bold text-text-primary text-center flex-1">Fais relire ta lettre par un expert</h2>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -38,17 +38,12 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
               </svg>
             </button>
           </div>
-          <p className="text-center text-text-primary font-medium mb-4">Fais relire ta lettre par un expert</p>
 
           {/* Content */}
           <div className="space-y-4">
-            <p className="text-text-primary">
-              <span className="font-semibold">{prepaNom}</span> à <span className="font-semibold">{prepaVille}</span> est notre prépa partenaire dans ta ville.
-            </p>
-
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-sm text-text-primary">
-                <span className="font-semibold">Leurs experts en études de santé</span> peuvent relire ta lettre de motivation et te donner des conseils personnalisés pour maximiser tes chances.
+              <p className="text-text-primary">
+                <span className="font-semibold">{prepaNom}</span> peut relire ta lettre gratuitement. C'est une prépa partenaire certifiée de Hippocast.
               </p>
             </div>
 

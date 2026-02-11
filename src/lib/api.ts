@@ -112,10 +112,10 @@ function generateUserId(): string {
   return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Récupère l'utm_source de l'URL
+// Récupère l'utmsource de l'URL
 function getUtmSource(): string {
   const params = new URLSearchParams(window.location.search);
-  return params.get('utm_source') || '';
+  return params.get('utmsource') || '';
 }
 
 // Helper to build form payload from store
@@ -152,7 +152,9 @@ export function buildFormPayload(): N8nFormPayload {
     jpo: answers.jpo as boolean,
     ...(answers.jpo === true && { jpoRetenu: answers.jpoRetenu as string }),
     attractionFac: answers.attractionFac as string,
-    accompagnement: answers.accompagnement as string,
+    accompagnement: Array.isArray(answers.accompagnement)
+      ? (answers.accompagnement as string[]).join(' / ')
+      : (answers.accompagnement as string) || '',
   };
 
   if (parcours === 'PASS') {

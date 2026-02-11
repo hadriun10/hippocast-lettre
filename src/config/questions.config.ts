@@ -116,7 +116,7 @@ export const blocks: Block[] = [
       {
         id: 'mineures',
         type: 'text',
-        label: 'Quelle(s) mineure(s) as-tu choisie(s) ou repérée(s) ?',
+        label: 'Quelle(s) mineure(s) as-tu choisie(s) ou repérée(s) ? (tu peux écrire "toutes")',
         placeholder: 'Exemple : Droit, Économie-Gestion',
         required: true,
         condition: { field: 'parcours', value: 'PASS' },
@@ -318,14 +318,13 @@ export const blocks: Block[] = [
       },
       {
         id: 'accompagnement',
-        type: 'dropdown',
-        label: 'Quel accompagnement souhaites-tu faire ? (ce ne sera pas mentionné dans ta lettre)',
+        type: 'checkbox',
+        label: 'Quel(s) accompagnement(s) comptes-tu prendre ? (ce ne sera pas mentionné dans ta lettre)',
         required: true,
         options: [
-          { value: 'prepa', label: 'Prépa' },
+          { value: 'prepa', label: 'Prépa médecine' },
           { value: 'tutorat', label: 'Tutorat' },
-          { value: 'les-deux', label: 'Les deux' },
-          { value: 'rien', label: 'Rien' },
+          { value: 'aucun', label: 'Aucun' },
         ],
       },
     ],

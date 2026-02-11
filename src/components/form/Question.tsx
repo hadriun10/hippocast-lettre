@@ -60,6 +60,21 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
     onAnswered();
   };
 
+  // Pour checkbox : toggle une valeur dans un array
+  const handleCheckboxToggle = (optionValue: string) => {
+    const currentValues = (value as string[]) || [];
+    const newValues = currentValues.includes(optionValue)
+      ? currentValues.filter(v => v !== optionValue)
+      : [...currentValues, optionValue];
+
+    setAnswer(question.id, newValues);
+
+    // Appeler onAnswered si au moins une option est sélectionnée
+    if (newValues.length > 0) {
+      onAnswered();
+    }
+  };
+
   if (!isVisible) return null;
 
   return (
@@ -137,6 +152,31 @@ export function Question({ question, isVisible, onAnswered }: QuestionProps) {
 
       {question.type === 'info' && (
         <p className="text-sm font-bold text-text-primary">{label}</p>
+      )}
+
+      {question.type === 'checkbox' && (
+        <div>
+          <label className="block text-sm font-medium text-text-primary mb-3">
+            {label}
+            {question.required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+          <div className="space-y-2">
+            {filteredOptions?.map((option) => {
+              const isSelected = ((value as string[]) || []).includes(option.value);
+              return (
+                <label key={option.value} className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => handleCheckboxToggle(option.value)}
+                    className="w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                  />
+                  <span className="text-sm text-text-primary">{option.label}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );

@@ -33,7 +33,7 @@ export function ConsentReminderModal1({ isOpen, onAccept, onRefuse }: ConsentRem
           <div className="flex flex-col gap-3">
             <button
               onClick={onAccept}
-              className="w-full px-8 py-3 bg-violet hover:bg-violet-dark text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
             >
               Oui, merci
             </button>

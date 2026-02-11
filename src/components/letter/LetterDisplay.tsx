@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { Button } from '../ui';
 import { useFormStore } from '../../store/useFormStore';
 import { usePrepaPartenaire } from '../../hooks/usePrepaPartenaire';
-import { PrepaRdvPopup } from '../popup/PrepaRdvPopup';
 
-export function LetterDisplay() {
+interface LetterDisplayProps {
+  onFaireRelireClick?: () => void;
+}
+
+export function LetterDisplay({ onFaireRelireClick }: LetterDisplayProps) {
   const { letter } = useFormStore();
   const [copied, setCopied] = useState(false);
-  const [showPrepaPopup, setShowPrepaPopup] = useState(false);
-  const { prepaPartenaire, hasPrepaPartenaire } = usePrepaPartenaire();
+  const { hasPrepaPartenaire } = usePrepaPartenaire();
 
   const handleCopy = async () => {
     if (!letter) return;
@@ -22,18 +24,29 @@ export function LetterDisplay() {
     }
   };
 
-  const handleDownload = () => {
-    if (!letter) return;
+  const handleShare = async () => {
+    const { userEmail } = useFormStore.getState();
+    const utmSource = userEmail ? `share_${userEmail}` : 'share';
+    const shareUrl = `https://lettre.hippocast.fr?utmsource=${encodeURIComponent(utmSource)}`;
+    const shareText = `Hello, t'as déjà tes lettres de motivation parcoursup pour PASS/LAS ? Je te conseille cette appli pour créer ta lettre. C'est gratuit et le résultat est incroyable !\n\n${shareUrl}`;
 
-    const blob = new Blob([letter], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lettre-motivation-pass-las.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: shareText,
+        });
+      } catch (err) {
+        // L'utilisateur a annulé
+      }
+    } else {
+      // Fallback : copier le message
+      try {
+        await navigator.clipboard.writeText(shareText);
+        alert('Message copié ! Tu peux le coller dans ton app de messagerie.');
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
   };
 
   if (!letter) return null;
@@ -52,9 +65,9 @@ export function LetterDisplay() {
 
         <div className="flex flex-col gap-2">
           {/* Bouton Faire relire - en haut sur mobile, uniquement si prépa partenaire */}
-          {hasPrepaPartenaire && (
+          {hasPrepaPartenaire && onFaireRelireClick && (
             <button
-              onClick={() => setShowPrepaPopup(true)}
+              onClick={onFaireRelireClick}
               className="btn-shiny w-full px-6 py-3 text-white font-semibold rounded-lg transition-all duration-200 flex items-center justify-center gap-2 order-first md:order-none"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,30 +105,19 @@ export function LetterDisplay() {
             )}
           </Button>
 
-          <Button onClick={handleDownload} variant="secondary" className="w-full">
+          <Button onClick={handleShare} variant="secondary" className="w-full">
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
               />
             </svg>
-            Télécharger ma lettre
+            Partage l'outil !
           </Button>
         </div>
       </div>
-
-      {/* Popup RDV Prépa */}
-      {prepaPartenaire && (
-        <PrepaRdvPopup
-          isOpen={showPrepaPopup}
-          onClose={() => setShowPrepaPopup(false)}
-          prepaNom={prepaPartenaire.nom}
-          prepaVille={prepaPartenaire.ville}
-          prepaLien={prepaPartenaire.lien}
-        />
-      )}
     </>
   );
 }

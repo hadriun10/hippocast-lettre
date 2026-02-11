@@ -27,7 +27,7 @@ export function ConsentReminderModal2({ isOpen, onAccept, onRefuse }: ConsentRem
           <div className="space-y-3 mb-6">
             {advantages.map((advantage, index) => (
               <div key={index} className="flex items-start gap-3">
-                <span className="text-violet text-xl font-bold flex-shrink-0">✓</span>
+                <span className="text-green-600 text-xl font-bold flex-shrink-0">✓</span>
                 <span className="text-base text-gray-700">{advantage}</span>
               </div>
             ))}
@@ -43,7 +43,7 @@ export function ConsentReminderModal2({ isOpen, onAccept, onRefuse }: ConsentRem
           <div className="flex flex-col gap-3">
             <button
               onClick={onAccept}
-              className="w-full px-8 py-3 bg-violet hover:bg-violet-dark text-white font-semibold rounded-lg transition-colors"
+              className="w-full px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
             >
               Oui, je veux être aidé(e)
             </button>

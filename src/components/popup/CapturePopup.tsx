@@ -365,7 +365,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                         type="checkbox"
                         checked={acceptCGU}
                         onChange={(e) => setAcceptCGU(e.target.checked)}
-                        className="mt-1 w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                        className="mt-1 w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                       />
                       <span className="text-[10px] text-gray-600 leading-relaxed">
                         J'ai au moins 15 ans et j'ai pris connaissance des{' '}
@@ -391,7 +391,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                           type="checkbox"
                           checked={acceptConseils}
                           onChange={(e) => setAcceptConseils(e.target.checked)}
-                          className="mt-1 w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                          className="mt-1 w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                         />
                         <span className="text-[10px] text-gray-600 leading-relaxed">
                           J'accepte de recevoir des informations personnalisees sur mon orientation et ma
@@ -408,7 +408,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                           type="checkbox"
                           checked={acceptDonnees}
                           onChange={(e) => setAcceptDonnees(e.target.checked)}
-                          className="mt-1 w-4 h-4 rounded border-gray-300 text-violet focus:ring-violet"
+                          className="mt-1 w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                         />
                         <span className="text-[10px] text-gray-600 leading-relaxed">
                           J'accepte que Hippocast traite mes donnees personnelles afin de calculer et d'afficher
@@ -434,7 +434,7 @@ export function CapturePopup({ isOpen, onSubmit, isLoading }: CapturePopupProps)
                 <div className="mt-6 animate-fade-in">
                   <Button
                     type="submit"
-                    className="w-full bg-violet hover:bg-violet-dark text-white font-semibold px-8 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={!isFormValid}
                     isLoading={isLoading}
                   >

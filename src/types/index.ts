@@ -2,7 +2,7 @@
 
 export type Parcours = 'PASS' | 'LAS';
 
-export type QuestionType = 'text' | 'dropdown' | 'number' | 'boolean' | 'info';
+export type QuestionType = 'text' | 'dropdown' | 'number' | 'boolean' | 'info' | 'checkbox';
 
 export interface QuestionCondition {
   field: string;
@@ -69,7 +69,7 @@ export interface FormState {
 
   // Data
   parcours: Parcours | null;
-  answers: Record<string, string | number | boolean>;
+  answers: Record<string, string | number | boolean | string[]>;
 
   // UI States
   isLoading: boolean;
@@ -84,7 +84,7 @@ export interface FormState {
   error: string | null;
 
   // Actions
-  setAnswer: (questionId: string, value: string | number | boolean) => void;
+  setAnswer: (questionId: string, value: string | number | boolean | string[]) => void;
   setParcours: (parcours: Parcours) => void;
   showNextQuestion: () => void;
   goToNextBlock: () => void;

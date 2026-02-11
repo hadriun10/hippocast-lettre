@@ -8,14 +8,17 @@ const initialBlockStatuses: BlockStatus[] = ['active', 'pending', 'pending', 'pe
 
 interface ExtendedFormState extends FormState {
   userId: string;
+  userEmail: string;
   generationPhase: GenerationPhase;
   setGenerationPhase: (phase: GenerationPhase) => void;
   setUserId: (userId: string) => void;
+  setUserEmail: (email: string) => void;
 }
 
 export const useFormStore = create<ExtendedFormState>((set, get) => ({
   // User identification (généré au moment de l'envoi de la lettre)
   userId: '',
+  userEmail: '',
 
   // Navigation
   currentBlock: 0,
@@ -39,7 +42,7 @@ export const useFormStore = create<ExtendedFormState>((set, get) => ({
   error: null,
 
   // Actions
-  setAnswer: (questionId: string, value: string | number | boolean) => {
+  setAnswer: (questionId: string, value: string | number | boolean | string[]) => {
     set((state) => ({
       answers: { ...state.answers, [questionId]: value },
     }));
@@ -107,6 +110,8 @@ export const useFormStore = create<ExtendedFormState>((set, get) => ({
 
   setUserId: (userId: string) => set({ userId }),
 
+  setUserEmail: (email: string) => set({ userEmail: email }),
+
   showEncouragement: () => {
     // Only show encouragement randomly (40% chance)
     if (Math.random() > 0.6) {
@@ -120,6 +125,7 @@ export const useFormStore = create<ExtendedFormState>((set, get) => ({
   resetForm: () =>
     set({
       userId: '', // Reset - sera régénéré au prochain envoi
+      userEmail: '',
       currentBlock: 0,
       visibleQuestionIndex: 0,
       parcours: null,
