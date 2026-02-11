@@ -112,10 +112,10 @@ function generateUserId(): string {
   return `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// Récupère l'utmsource de l'URL
+// Récupère l'utmsource de l'URL (utmsource en priorité, fallback sur utm_source)
 function getUtmSource(): string {
   const params = new URLSearchParams(window.location.search);
-  return params.get('utmsource') || '';
+  return params.get('utmsource') || params.get('utm_source') || '';
 }
 
 // Helper to build form payload from store

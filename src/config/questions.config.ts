@@ -319,7 +319,7 @@ export const blocks: Block[] = [
       {
         id: 'accompagnement',
         type: 'checkbox',
-        label: 'Quel(s) accompagnement(s) comptes-tu prendre ? (ce ne sera pas mentionné dans ta lettre)',
+        label: 'Quel accompagnement comptes-tu prendre ? (plusieurs choix possibles, non mentionné dans ta lettre)',
         required: true,
         options: [
           { value: 'prepa', label: 'Prépa médecine' },

@@ -278,10 +278,10 @@ function App() {
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm">
-              Un outil cree par <span className="font-bold">Hippocast</span>
+              Un outil créé par <span className="font-bold">Hippocast</span>
             </p>
             <p className="text-xs md:text-sm text-text-secondary italic">
-              Calcule tes chances de reussir PASS/LAS
+              Génère ta lettre de motivation PASS/LAS en 4 mins
             </p>
             <div className="flex justify-center md:justify-start gap-4 mt-2 text-xs md:text-sm text-text-secondary">
               <a
