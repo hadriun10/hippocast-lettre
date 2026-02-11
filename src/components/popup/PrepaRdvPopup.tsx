@@ -46,14 +46,7 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
               <span className="font-semibold">{prepaNom}</span> à <span className="font-semibold">{prepaVille}</span> est notre prépa partenaire dans ta ville.
             </p>
 
-            {/* Image équipe */}
-            <img
-              src="/equipe_hippocast.webp"
-              alt="Équipe Hippocast"
-              className="w-full rounded-lg"
-            />
-            
-            <div className="bg-violet/5 border border-violet/20 rounded-lg p-4">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <p className="text-sm text-text-primary">
                 <span className="font-semibold">Leurs experts en études de santé</span> peuvent relire ta lettre de motivation et te donner des conseils personnalisés pour maximiser tes chances.
               </p>
@@ -85,13 +78,13 @@ export function PrepaRdvPopup({ isOpen, onClose, prepaNom, prepaVille, prepaLien
           <div className="mt-6 flex flex-col gap-2">
             <button
               onClick={handleRdv}
-              className="w-full px-6 py-3 bg-violet text-white font-semibold rounded-lg border border-black hover:bg-violet-dark transition-colors"
+              className="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-lg border border-green-700 hover:bg-green-700 transition-colors"
             >
               Prendre RDV gratuitement
             </button>
             <button
               onClick={onClose}
-              className="w-full px-6 py-2 bg-white text-text-secondary text-sm border border-black rounded-lg hover:text-text-primary transition-colors"
+              className="w-full px-6 py-2 bg-white text-text-primary text-sm border border-black rounded-lg hover:text-black transition-colors"
             >
               Non, je ne veux pas augmenter mes chances d'être pris en {parcours || 'PASS'}
             </button>

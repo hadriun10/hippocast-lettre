@@ -92,8 +92,8 @@ function App() {
     // Fermer la popup immédiatement
     setShowPopup(false);
 
-    // Si la personne veut une prépa et qu'il y a une prépa partenaire, afficher la popup RDV
-    if (data.wantsPrepa && prepaPartenaire) {
+    // Si il y a une prépa partenaire, afficher la popup RDV
+    if (prepaPartenaire) {
       setTimeout(() => setShowPrepaRdvPopup(true), 500);
     }
 
@@ -168,10 +168,10 @@ function App() {
       {/* Hero / Title Section */}
       <div className="text-center pt-8 pb-6 px-4">
         <h1 className="text-2xl md:text-3xl font-bold text-text-primary mb-3">
-          Genere ta lettre de motivation PASS/LAS
+          Génère ta lettre de motivation PASS/LAS
         </h1>
         <p className="text-text-primary mb-5 max-w-4xl mx-auto">
-          En 4 minutes, obtiens une <span className="font-bold">lettre personnalisee</span> basee sur{' '}
+          En 4 mins, obtiens une <span className="font-bold">lettre personnalisée</span> basée sur{' '}
           <span className="font-bold">ton profil</span> et les{' '}
           <span className="font-bold">attentes des jurys</span> Parcoursup.
         </p>
@@ -184,8 +184,8 @@ function App() {
           </div>
           <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-full px-3 py-1">
             <span className="text-yellow-500">★★★★★</span>
-            <span className="text-sm text-text-primary font-medium">4,7/5</span>
-            <span className="text-sm text-text-secondary">(411 avis)</span>
+            <span className="text-sm text-text-primary font-medium">4,8/5</span>
+            <span className="text-sm text-text-secondary">(598 avis)</span>
           </div>
         </div>
       </div>

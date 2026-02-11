@@ -152,6 +152,7 @@ export function buildFormPayload(): N8nFormPayload {
     jpo: answers.jpo as boolean,
     ...(answers.jpo === true && { jpoRetenu: answers.jpoRetenu as string }),
     attractionFac: answers.attractionFac as string,
+    accompagnement: answers.accompagnement as string,
   };
 
   if (parcours === 'PASS') {

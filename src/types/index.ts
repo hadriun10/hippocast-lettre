@@ -105,8 +105,6 @@ export interface PopupFormData {
   prenom: string;
   isParent?: 'oui' | 'non';
   consent?: 'oui' | 'non';
-  wantsPrepa?: boolean;
-  selectedPrepas?: string;
 }
 
 // Structure commune pour les deux parcours
@@ -125,6 +123,7 @@ interface BaseFormPayload {
   jpo: boolean;
   jpoRetenu?: string; // Si jpo = true
   attractionFac: string;
+  accompagnement: string;
 }
 
 // Structure spécifique PASS
