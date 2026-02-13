@@ -248,7 +248,7 @@ function App() {
               // During generation or complete: show tabs (disabled) + recap
               <>
                 <Tabs disabled />
-                <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-4 md:p-6 relative z-10 md:flex-1 md:overflow-y-auto">
+                <div className="bg-bg-form bg-organic-lines border-2 border-border rounded-none rounded-b-xl p-4 md:p-6 relative z-10 md:flex-1 md:overflow-y-auto">
                   <RecapSummary />
                 </div>
               </>
@@ -285,7 +285,7 @@ function App() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-[#f5f0ea] text-text-primary py-4 md:py-6 px-4 md:px-8">
+      <footer className="bg-[#f8f4ed] text-text-primary py-4 md:py-6 px-4 md:px-8">
         <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
           <div className="text-center md:text-left">
             <p className="text-sm">

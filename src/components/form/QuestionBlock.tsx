@@ -131,7 +131,7 @@ export function QuestionBlock({ block, isLastBlock, onComplete, onGenerate }: Qu
   }, [groupsToShow, isBlockComplete]);
 
   return (
-    <div className="bg-bg-form border-2 border-border rounded-none rounded-b-xl p-4 md:p-8 relative z-10 md:flex-1 md:overflow-y-auto" ref={scrollRef}>
+    <div className="bg-bg-form bg-organic-lines border-2 border-border rounded-none rounded-b-xl p-4 md:p-8 relative z-10 md:flex-1 md:overflow-y-auto" ref={scrollRef}>
       <div className="space-y-4">
         {questionGroups.slice(0, groupsToShow).map((group) => (
           <div key={group.main.id} className={group.inline ? 'flex gap-2 md:gap-4 items-end' : ''}>

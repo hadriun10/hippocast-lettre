@@ -2,12 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=VT323&display=swap');
 
 @theme {
-  --color-bg-page: #FDF8F3;
-  --color-bg-form: #fef5e6;
-  --color-tab-active: #fef5e6;
-  --color-tab-completed: #e8dcc6;
+  --color-bg-page: #F5F3FF;
+  --color-bg-form: #fffbf5;
+  --color-tab-active: #fffbf5;
+  --color-tab-completed: #f5ede0;
   --color-violet: #8b6fcf;
-  --color-violet-light: #e0d4ff;
+  --color-violet-light: #C4B5FD;
   --color-violet-dark: #7a5dc4;
   --color-border: #1F2937;
   --color-text-primary: #1F2937;
@@ -156,4 +156,9 @@ body {
 .btn-shiny:hover {
   box-shadow: 0 6px 20px rgba(74, 53, 128, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transform: translateY(-1px);
+}
+
+/* Paper texture background */
+.bg-organic-lines {
+  background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
 }

@@ -7,13 +7,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg-page': '#FDF8F3',
-        'bg-form': '#FDF8F3',
-        'tab-active': '#E8DFD4',
-        'tab-completed': '#D4C9BC',
+        'bg-page': '#F5F3FF',
+        'bg-form': '#fffbf5',
+        'tab-active': '#fffbf5',
+        'tab-completed': '#f5ede0',
         'violet': {
           DEFAULT: '#8B5CF6',
-          light: '#DDD6FE',
+          light: '#C4B5FD',
           dark: '#7C3AED',
         },
         'border': '#1F2937',
